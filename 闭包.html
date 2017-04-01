@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>闭包</title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+	<script>
+		//	闭包只能取得包含函数变量的最后一个值
+		//	闭包所保存的是整个变量对象
+		function c() {
+			var result = [];
+			for(var i=0;i<10;i++){
+				result[i] = function (i){
+					return i   	        //每个函数所引用的同一个变量i
+				}
+				console.log(result[i]())
+			}
+			return result		// 函数c返回时,i=10
+		}
+
+		// js函数参数 按值 传递
+		function c(){
+			var result = []
+			for(var i=0;i<10;i++){
+				result[i] = function (num){
+					return function(){
+						return num
+					} 	       
+				}(i)
+			}
+			return result
+		}
+
+		//setTimeout延迟运行函数
+		// 定时器仅仅只是计划代码在未来的某个时间执行。执行的时机也是不能保证的
+	    var arr =['第一次setTimeout','第二次setTimeout','第三次setTimeout']
+        for(var i=0;i<arr.length;i++){
+        	console.log('第'+(i+1)+'次进入for循环')
+            (function(i){
+                setTimeout(function(){
+                    console.log(arr[i])
+                },i*10)
+                console.log('第'+(i+1)+'次进入匿名函数')
+            })(i)
+        };
+        console.log('我比setTimeout快');
+        console.log('因为我是主线程');
+
+        //
+	</script>
+</body>
+</html>
