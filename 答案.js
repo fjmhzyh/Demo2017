@@ -255,7 +255,7 @@ e.removeAttribue('title')
  document.activeElement
 
  // 6.检查网页是否获得焦点
- doucment.hasFocus() //return boolean
+ document.hasFocus() //return boolean
 
  // 7.如何访问data*属性  <div data-apple='pie' data-orange='juice'></div>
 apple = div.dataset.apple    //dataset属性只支持IE11+
@@ -282,6 +282,12 @@ f.element[name]
 // 1.获取时间戳
 var t = +new Date();
 var t = Date.now()
+
+//不传参数时,自动获得当前日期和时间
+var a = new Date() //Tue Dec 27 2016 13:18:04 GMT+0800 (中国标准时间) 
+
+//传入时间戳,获取特定时间
+var c = new Date(1482815447151)  //Tue Dec 27 2016 13:10:47 GMT+0800 (中国标准时间)
 
 //.Date的toJSON()方法
 var t = new Date()  //返回一个对象
@@ -529,6 +535,9 @@ scrollHeight   //只读属性。返回元素内容的整体尺寸，包括元素
 var double = (x) => x*2;
 // 箭头函数是匿名函数
 //  箭头函数省略了括号和return
+x => x * x
+//返回一个对象
+x => ({ foo: x })
 
 
 setTimeout()
@@ -541,7 +550,7 @@ setTimeout()
 
 window.resizeTo(800,600)
 window.moveTo(200,200)
-window.open('http://www.cnblogs.com/sammiyu/p/my_tech1.html',"_blank",'width=200,height=200')
+window.open('https://www.baidu.com',"_blank",'width=200,height=200')
 
 
 // 变量类型透明,最小化语句
@@ -584,16 +593,57 @@ var mean = total/scores.length;
 console.log(mean);
 
 
+//Map是一组键值对的数据结构，具有极快的查找速度。
+var m = new Map();
+console.log(typeof m);    //object
+m.set('Ann', 67); // 添加新的key-value
+m.has('Ann'); // 是否存在key 'Adam': true   
+m.get('Ann'); // 67
+m.delete('Ann'); // 删除key 'Adam'
+
+//Set也是一组key的集合，但不存储value。由于key不能重复，所以，在Set中，没有重复的key。
+var s = new Set([1, 2, 3, 3, '3']);  // Set {1, 2, 3, "3"}  自动过滤了重复的key
+console.log(s);
+console.log(typeof s);    //object
+
+//新增和删除
+s.add(4)
+s.delete(4)
+
+//size属性
+//map和set都有一个size属性,相当于length。
 
 
+//Generator函数
+
+function* helloWorldGenerator() {
+  yield 'hello';    //yield语句就是暂停标志。
+  yield 'world';    //next方法遇到yield就暂停执行后面的操作
+  return 'ending';
+}
+
+var hw = helloWorldGenerator(); //Generator函数并不执行,而是记录了函数内部状态的指针
+console.log(hw.next())  //{value: "hello", done: false}
+console.log(hw.next())  //{value: "world", done: false}
+console.log(hw.next())  //{value: "ending", done: true} done为true表示迭代结束
+console.log(hw.next())  //{value: undefined, done: true}    
 
 
+//解构赋值
+//按照对应位置，对变量赋值。
+var [a, b, c] = [1, 2, 3]; //a=1 b=2 c=3
+let [ , , third] = ["foo", "bar", "baz"];  // third='baz'
+let [head, ...tail] = [1, 2, 3, 4];   // head=1 tail=[2,3,4]
+let [x, y, ...z] = ['a'];   // x='a' y=undefined z=[]
 
+//交换变量的值
+var x=1,y=2;
+[x, y] = [y, x];  // x=2 y=1
 
-
-
-
-
+//对象
+var { foo, bar } = { foo: "aaa", bar: "bbb" }; //foo='aaa' bar='bbb'
+//变量必须与属性同名，才能取到正确的值。
+var { baz } = { foo: "aaa", bar: "bbb" };  // baz =undefined
 
 
 
