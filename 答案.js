@@ -391,7 +391,20 @@ object.name  //更简洁
 
 
 
-// 正则表达式
+正则表达式
+var text = 'ab123,AB123,CD123'
+var m = new RegExp('ab','ig');   //构造函数的形式
+var m = /ab/    // 字面量的形式  二者等价
+var m = new RegExp(/[a-zA-Z]{2}/,'ig');
+// text是要匹配的字符 或 正则 
+// ig 表示忽略大小写,全局匹配
+m.test(text)  //  返回true/false
+m.exec(text)  //  返回匹配的文字,只返回一个
+
+String.prototype.match()  // 返回一个空数组
+// 接受一个正则,如果是字符串,则隐式调用new RegExp,转换成正则
+
+
 
 // .这个符号意味着可以匹配任意一个字符
 //c.t 可以匹配cat, cot, czt c.t等等   可以通过\转义  c\.t
@@ -584,18 +597,60 @@ var mean = total/scores.length;
 console.log(mean);
 
 
+//  this 指向
+setTimeout() document.addEventListener() 
+//  会使this指向全局对象,使用bind()绑定正确的对象
 
 
+//  延迟运行
+var id =setTimeout()  // 返回一个ID
+clearTimeout(id)  // 阻止定时函数执行
 
 
+//process.nextTick 允许你把一个回调放到下一次事件轮训队列的头上
+process.nextTick(function(){
+    // do sth here
+})
 
 
+// Object.create()
+var o;
+
+// 创建一个原型为null的空对象
+o = Object.create(null);
+
+o = {};
+// 以字面量方式创建的空对象就相当于:
+o = Object.create(Object.prototype);
+
+//Shape - superclass
+function Shape() {
+  this.x = 0;
+  this.y = 0;
+}
+
+Shape.prototype.move = function(x, y) {
+    this.x += x;
+    this.y += y;
+    console.info("Shape moved.");
+};
+
+// Rectangle - subclass
+function Rectangle() {
+  Shape.call(this); // 继承超类构造函数的属性
+}
+
+Rectangle.prototype = Object.create(Shape.prototype);  // 继承超类原型链属性
+
+var rect = new Rectangle();
 
 
+// Object.assign  适用于浅拷贝
+// 方法用于将所有可枚举的属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。
+var o1 = { a: 1 };var o2 = { b: 2 };var o3 = { c: 3 };
+var obj = Object.assign(o1, o2, o3);   // 合并3个对象
 
-
-
-
-
+ Object.keys(obj)   //  枚举自身属性,返回一个属性数组
+for in   // 包括原型链上的属性
 
 */
