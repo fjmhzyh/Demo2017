@@ -230,6 +230,10 @@ shouldComponentUpdate()   // return boolean 确定是否要更新
 
 
 
+// redux
+
+// rducer
+
 
 
 
