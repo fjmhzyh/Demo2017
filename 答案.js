@@ -2,6 +2,10 @@ shift+右键打开命令行
 文件拖到cmd输入路径
 ctrl+shift + 上下
 
+// git
+github 上有5个文件,本地有3个文件,git push后本地覆盖了github
+github 上的文件和本地冲突时, git pull 会合并到本地文件
+
 // 执行环境
 执行环境 定义了变量或函数有权访问的其他数据
 
