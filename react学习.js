@@ -1,3 +1,4 @@
+前端开发中,性能消耗最大的就是DOM操作
 react最小化了重绘,避免了不必要的DOM操作
 
 在状态发生变化时,由于读取和更新DOM的性能问题,js重新渲染页面会很慢。
@@ -59,6 +60,17 @@ var ul = React.DOM.ul(null,li,li,li,li) // 可以写多个子元素,但不接受
 
 ReactDOM.render(component/html,document.getElementById('example'));
 
+
+// 小写字母对应DOM元素,大写字母对应组件元素
+// 命名空间,解决组件名冲突
+<Nav.Button  ufo='xxx' ></Nav.Button>  //  自定义标签中可以自定义属性
+<Nav.Button  data-ufo='xxx' ></Nav.Button>  // 这个也可以
+<Nav.Button  aria-ufo='xxx' ></Nav.Button>  // 网络无障碍属性也可以
+
+// 在JSX中往DOM元素传自定义属性,无法被React解析
+<div ufo='xxx'></div>  // 报错
+<div data-ufo='xxx' ></div>  // 这个可以
+
 // ES5 组件
 var MyComponent = React.createClass({
   getInitialState() {
@@ -73,6 +85,11 @@ class MyComponent extends React.Component {
     this.state = { /* initial state, this is ES6 syntax (classes) */ };
   }
 }
+
+
+// state
+state只关心每个组件自己内部的状态,这些状态只能在组件内部改变。
+setState()  // setState() 是一个异步方法,一个生命周期内的setState()方法会合并操作
 
 
 

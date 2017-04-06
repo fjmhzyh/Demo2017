@@ -1,4 +1,10 @@
 
+
+// 无论你在使用什么模块, 找一下emit 和 on 这两个方法
+// Express的app对象就有这些方法,并且它们非常适合在应用中发消息
+// EventEmitter 本质上是观察者模式
+
+
 // 同步方法快于异步,同步方法不会延迟执行。但同步方法会阻塞线程
 
 // 继承
@@ -123,14 +129,89 @@ Buffer.from(string[, encoding])   //  第二个参数是第一个参数的类型
 
 // 异常处理
 // 当一个EventEmitter 实例发生错误时,通畅会发出一个error事件。
-// 在node中,error事件被当做特殊的情况,加入没有监听器,默认打印一个堆栈,并退出程序
+// 在node中,error事件被当做特殊的情况,假如没有监听器,默认打印一个堆栈,并退出程序
+
+function handleError(err){
+  console.error('报错：',err.message,err,stack);
+}
+
+// 假设你获取数据成功,返回了buf,但你无法确定未来的某一天,是否会获取成功
+fs.readFile('a.txt',function(err,buf){
+    if(err){
+      handleError(err)
+    }
+    // do sth here
+})
+
+// 异常未捕获,导致node程序退出
+// 解决方案,记录错误日志
+process.on('uncaughtException',function(err){
+    console.error(err)  //这样程序就不会退出了。但可能导致内存资源泄露,并且变得及不稳定
+})
+
+// 正确做法
+process.on('uncaughtException',function(err){
+    console.error(err);   
+    server.close();       //服务器停止接受请求
+    setTimeout(process.exit,5000,1);   // 结束进程
+})
+
+
+// node debug a.js   默认断点为1
+debug> help   
+debug> restart  // 重新运行
+debug> watch('a')  // 监听变量a
+debug> watcher   // 查看
+debug> next  // 进入下一行
+debug> step  // 进入函数内部
+debug> out   // 退出函数
 
 
 
-// 无论你在使用什么模块, 找一下emit 和 on 这两个方法
-// Express的app对象就有这些方法,并且它们非常适合在应用中发消息
+// 子进程  node-cmd模块
+// windows 和 unix 都有一个PATH环境变量,包含了一组可执行程序的执行目录列表。
+// 如果一个程序在这个列表中,那么即使不用它的绝对或相对路径,也可以直接加载到这个程序
+// 如果执行目录里没有定义,那么必须提供具体的执行路径
+execFile  //缓存结果,并提供一个回调
+// 第一个参数是程序名称,如node,npm
+// 第二个参数是命令输入
+execFile('node',['a.js'],function(err,stdout,stderr){  
+  if(err){
+    console.error(err);  //  ENOENT错误往往是路径错误或者程序名称错误,导致找不到应用。也可能是权限不足
+  }
+  console.log('stdout',stdout)
+  console.log('stderr',stderr)
+})
 
-// EventEmitter 本质上是观察者模式
+spawn  // 依赖流的方式输出,不缓存。适合大数据处理和处理读取中的数据
+var c = cp.spawn('node',['thunder.js'])
+c.on('error',console.error);
+c.stdout.pipe(process.stdout);
+c.stderr.pipe(process.stderr);
+
+exec  // 一次性执行一组外部应用
+exec('cat a.txt'|'sort'|'uniq',function(err,stdout,stderr){
+  if(err){
+    console.error(err);
+  }
+  console.log(stdout)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
  
@@ -389,3 +470,4 @@ EventEmitter.removeListener(event, listener)
 //npm 提供了一个有趣的命令 npm link， 它的功能是在本地包和全局包之间创建符号链
 //接。我们说过使用全局模式安装的包不能直接通过 require 使用，但通过 npm link 命令
 //可以打破这一限制。
+
