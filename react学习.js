@@ -59,7 +59,23 @@ var ul = React.DOM.ul(null,li,li,li,li) // 可以写多个子元素,但不接受
 
 ReactDOM.render(component/html,document.getElementById('example'));
 
-React.createClass({})
+// ES5 组件
+var MyComponent = React.createClass({
+  getInitialState() {
+    return { /* initial state */ };
+  },
+});
+
+// ES6 组件
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { /* initial state, this is ES6 syntax (classes) */ };
+  }
+}
+
+
+
 
 react将数组中的每一项渲染为一个子节点
 var text = ['apple',' ','juice'];
@@ -276,3 +292,60 @@ var tom = (function(){
 })()
 
 ﻿
+
+
+// react-router
+
+//Router  Route path  component
+<Router history={hashHistory}>
+  <Route path="/" component={App}/>
+  <Route path="/repos" component={Repos}/>
+  <Route path="/about" component={About}/>
+</Router>
+
+// Link to  activeStyle  activeClassName
+<ul role="nav">
+  <li><Link to="/about" activeClassName="active" >About</Link></li>
+  <li><Link to="/repos" activeStyle={{ color: 'red' }} >Repos</Link></li>
+</ul>
+
+// 首页
+<IndexRoute component={Home}/>
+
+
+// 嵌入式路由 页面共享
+<Router history={hashHistory}>
+  <Route path="/" component={App}>
+    {/* make them children of `App` */}
+    <Route path="/repos" component={Repos}/>
+    <Route path="/about" component={About}/>
+  </Route>
+</Router>
+
+<div>
+  <h1>React Router Tutorial</h1>
+  <ul role="nav">
+    <li><Link to="/about">About</Link></li>
+    <li><Link to="/repos">Repos</Link></li>
+  </ul>
+  {this.props.children}
+</div>
+
+
+//  history={browserHistory}
+hashHistory     // 开发环境
+browserHistory  // 真实的url
+
+//首先 browserHistory 其实使用的是 HTML5 的 History API，浏览器提供相应的接口来修改浏览器的历史记录；
+//而 hashHistory 是通过改变地址后面的 hash 来改变浏览器的历史记录；
+
+//History API 提供了 pushState() 和 replaceState() 方法来增加或替换历史记录。
+//而 hash 没有相应的方法，所以并没有替换历史记录的功能。
+//但 react-router 通过 polyfill 实现了此功能，具体实现没有看，好像是使用 sessionStorage。
+
+//另一个原因是 hash 部分并不会被浏览器发送到服务端，
+//也就是说不管是请求 http://domain.com/index.html#foo 还是 http://domain.com/index.html#bar ，
+//服务只知道请求了 index.html 并不知道 hash 部分的细节。
+//而 History API 需要服务端支持，这样服务端能获取请求细节。
+
+//还有一个原因是因为有些应该会忽略 URL 中的 hash 部分，记得之前将 URL 使用微信分享时会丢失 hash 部分。

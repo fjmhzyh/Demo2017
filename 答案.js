@@ -782,22 +782,98 @@ function check(count){
 
 
 
+// ES5 和ES6 的构造函数
+function C(age){
+    this.age = age;
+}   
+
+var c = new C();
+c.age = undefined;
+
+class C {
+    constructor(age) {
+        this.age = age;
+    }
+}
+var c = new C();
+c.age = undefined;
+
+
+// ES6 class
+// constructor方法是类的默认方法，通过new命令生成对象实例时，自动调用该方法。
+// 一个类必须有constructor方法，如果没有显式定义，一个空的constructor方法会被默认添加。
+class A {
+    constructor(age) {
+        this.age = age
+    }
+}
+
+//  extends关键字实现继承
+class B extends A {
+    // 此时 A 和 B 一模一样
+    // 这里隐式调用了constructor方法,并调用了super()方法
+}
+
+class B extends A {
+    constructor(age) {
+        // constructor 里面 不调用 super() 会报错,实例的this为undefined
+    }
+}
+
+var b = new B()  // Uncaught ReferenceError: this is not defined
+ 
+
+class B extends A{
+  constructor(x, y,age) {
+    // 构造函数
+    super(age);  //  A.prototype.constructor.call(this)  //调用父类的构造函数
+  }
+    // 方法之间不需要逗号分隔，加了会报错。
+  toString() {
+    // 原型链方法
+  }
+}
+
+
+// __proto__
+// ES5实现之中，每一个对象都有__proto__属性，指向对应的构造函数的prototype属性
 
 
 
 
+class H {
+    constructor() {
+        this.a = 'a'
+    }
+
+    b() {
+        return "b"
+    }
+}
+
+var h = new H()
 
 
+function A(){
+    this.a = 'a';
+}
 
+A.prototype = {
+    b:"b",
+    c:function(){
+        return c
+    }
+}
 
-
-
-
-
-
-
-
-
+class A {
+    constructor(){
+        this.a = 'a'
+    }
+    c(){
+        return c
+    }
+}
+A.prototype.b = 'b'
 
 
 
