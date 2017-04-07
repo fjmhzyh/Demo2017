@@ -93,6 +93,67 @@ setState()  // setState() 是一个异步方法,一个生命周期内的setState
 
 
 
+// virtual dom 在内存中以对象的形式存在
+// syntheticEvent 合成事件可以给 virtual dom 添加事件,同样支持冒泡,所有的事件都自动绑定到最外层
+// 尽量不要混用 合成事件 和 原生事件
+class Demo extends Component {
+  componentDidMount() {
+    this.refs.button.addEventListener('click',() =>{
+         //  绑定原生事件
+    })
+  }
+  componentWillUnmount() {
+    this.refs.button.removeEventListener('click',() =>{
+         //  使用原生事件,一定要在组件卸载时手动移除,否则很可能出现内存泄露
+    })
+  }
+  render() {
+    return <button ref='button'></button>
+  } 
+}
+
+
+// 表单
+// 受控组件,每当表单状态发生变化,都会被写入到组件的state中,这种组件成为受控组件
+// 表单初始值来自state,即单向数据绑定,通过onChange事件,将新的表单数据传回state,完成双向数据绑定
+// 这也意味着我们在setState之前,可以对表单进行清洗和校验
+inputHandler:function(name,e){
+  var {value} = e.target
+    switch(name){
+      case 'user':
+        value = value.substring(0,5).toUpperCase()
+        break;
+      case 'age':
+        value =  isNaN(value) ? 0 : Number(value);
+        break;
+    }
+  this.setState({
+      [name]:value
+  })
+},
+<input type="text" value={user} onChange={this.inputHandler.bind(this,'user')} />
+<input type="text" value={age} onChange={this.inputHandler.bind(this,'age')} 
+// 非受控表单  使用 defaultValue 和 defaultChecked 来表示
+// 非受控组件的状态 不会受到 应用状态 的控制
+<form onSubmit={this.handleSubmit}>
+  <input type="text" ref='name' defaultValue='hangzhou'/>
+  <button type='submit'>submit</button>
+</form>
+handleSubmit:function(e){
+  e.preventDefault()
+  const {value} = this.refs.name;  // 拿值
+  console.log(value);
+},
+
+
+
+// style
+{ width:10 }  // 自动添加px
+// 使用classname库
+
+
+
+
 
 react将数组中的每一项渲染为一个子节点
 var text = ['apple',' ','juice'];
@@ -246,11 +307,6 @@ ReactDOM.render(
 // 获取真实的DOM节点
 this.refs.xxx
 
-// 表单输入
-handleChange: function(event) {
-	this.setState({value: event.target.value});
-}
-<input type="text" value={value} onChange={this.handleChange} />
 
 
 // 组件生命周期
@@ -366,3 +422,71 @@ browserHistory  // 真实的url
 //而 History API 需要服务端支持，这样服务端能获取请求细节。
 
 //还有一个原因是因为有些应该会忽略 URL 中的 hash 部分，记得之前将 URL 使用微信分享时会丢失 hash 部分。
+
+
+
+
+
+
+
+
+// Redux
+// Redux 是一个有用的架构，但不是非用不可。事实上，大多数情况，你可以不用它，只用 React 就够了。
+// "如果你不知道是否需要 Redux，那就是不需要它。"
+// "只有遇到 React 实在解决不了的问题，你才需要 Redux 。"
+
+// 基本概念
+Store    // 保存数据的地方，你可以把它看成一个容器。整个应用只能有一个 Store。
+State    // Store对象包含所有数据。某个时点的数据集合，就叫做 State。
+store.getState()  // 获取当前时刻的 State
+// Redux 规定， 一个 State 对应一个 View。只要 State 相同，View 就相同。
+// 你知道 State，就知道 View 是什么样，反之亦然。
+Action  // State 的变化，会导致 View 的变化。但是，用户接触不到 State，只能接触到 View。
+// 所以，State 的变化必须是 View 导致的。Action 就是 View 发出的通知，表示 State 应该要发生变化了。
+// Action 是一个对象。其中的type属性是必须的，表示 Action 的名称。其他属性可以自由设置
+const action = {
+    type: 'ADD_TODO',
+    payload: 'Learn Redux'
+};
+Action Creator    // Action的函数生成器
+store.dispatch()  // View 发出 Action 的唯一方法
+store.dispatch({
+  type: 'ADD_TODO',
+  payload: 'Learn Redux'
+});
+
+Reducer  // Store 收到 Action 以后，必须给出一个新的 State，这样 View 才会发生变化。
+// 这种 State 的计算过程就叫做 Reducer。
+// Reducer 是一个函数，它接受 Action 和当前 State 作为参数，返回一个新的 State。
+const reducer = function (state, action) {
+  // ...
+  return new_state;
+};
+
+combineReducers  //你只要定义各个子 Reducer 函数，然后用这个方法，将它们合成一个大的 Reducer。
+import { combineReducers } from 'redux';
+const chatReducer = combineReducers({
+  chatLog,
+  statusMessage,
+  userName
+})
+
+// 实际应用中，Reducer 函数不用像上面这样手动调用，store.dispatch方法会触发 Reducer 的自动执行。
+// 为此，Store 需要知道 Reducer 函数，做法就是在生成 Store 的时候，将 Reducer 传入createStore方法。
+// createStore方法还可以接受第二个参数，表示 State 的最初状态。这通常是服务器给出的。
+// 如果提供了这个参数，它会覆盖 Reducer 函数的默认初始值。
+import { createStore } from 'redux';
+const store = createStore(reducer, window.STATE_FROM_SERVER);
+
+// Reducer 函数最重要的特征是，它是一个纯函数。也就是说，只要是同样的输入，必定得到同样的输出。
+// 由于 Reducer 是纯函数，就可以保证同样的State，必定得到同样的 View。
+// 但也正因为这一点，Reducer 函数里面不能改变 State，必须返回一个全新的对象
+
+store.subscribe(listener); // Store允许使用store.subscribe设置监听,一旦State发生变化,就自动执行这个函数
+// 显然，只要把 View 的更新函数（对于 React 项目，就是组件的render方法或setState方法）放入listen,
+// 就会实现 View 的自动渲染。
+// store.subscribe方法返回一个函数，调用这个函数就可以解除监听。
+var unsubscribe = store.subscribe(listener);
+unsubscribe()  // 解除监听
+
+

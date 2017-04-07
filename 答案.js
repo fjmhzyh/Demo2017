@@ -676,6 +676,54 @@ var { foo, bar } = { foo: "aaa", bar: "bbb" }; //foo='aaa' bar='bbb'
 var { baz } = { foo: "aaa", bar: "bbb" };  // baz =undefined
 
 
+// ES6 object
+// getter setter
+
+var o ={
+    _age:1,
+    get age () {
+        return this._age;
+    },
+    set age (value) {
+        if (value < this._age) {
+          console.log('数值太小了！');
+        }
+        this._age = value;
+    }
+}
+
+o.age    // 调用getter
+o.age=5  // 调用setter
+delete o.age  // 删除getter
+
+// ES5 写法
+var o = {
+    _age:1
+}
+// 使用getter 和 setter 时,不允许使用writable和value这两个属性
+Object.defineProperty(o,"age",{
+    get:function (){
+        return this._age;    
+    },
+    set:function (value){
+        this._age = value;
+    }
+});
+
+
+// Object.defineProperty(obj, prop, descriptor)
+Object.defineProperty(obj,"test",{
+    configurable:true,          // 是否可以删除或重写属性
+    enumerable:true,            // 是否可以枚举
+    value:任意类型的值,
+    writable:true               // 是否可以修改value
+});
+
+
+
+
+
+
 
 // Object.create()
 var o;
@@ -712,8 +760,13 @@ var rect = new Rectangle();
 // Object.assign  适用于浅拷贝
 // 方法用于将所有可枚举的属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。
 var o1 = { a: 1 };var o2 = { b: 2 };var o3 = { c: 3 };
-var obj = Object.assign(o1, o2, o3);   // 合并3个对象
+var obj = Object.assign(o1, o2, o3);   // 合并3个对象,返回target对象
+// 属性名冲突时,用source的属性替换target的属性
 
+
+
+
+Object.values()    //  返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历（enumerable）属性的键值。
 Object.keys(obj)   //  枚举自身属性,返回一个属性数组
 for in   // 包括原型链上的属性
 
@@ -839,45 +892,102 @@ class B extends A{
 }
 
 
+// static 关键字,无法被实例调用
+class StaticMethodCall {
+    static staticMethod() {
+        return 'hello';
+    }
+    static anotherStaticMethod() {
+        return this.staticMethod() + ' world';
+    }
+}
+StaticMethodCall.staticMethod();
+
+var s = new StaticMethodCall();
+s.staticMethod()  // s.staticMethod is not a function
+
+
 // __proto__
 // ES5实现之中，每一个对象都有__proto__属性，指向对应的构造函数的prototype属性
 
 
 
+// import 和 export
+// 这种加载称为“编译时加载”或者静态加载，即 ES6 可以在编译时就完成模块加载，
+// 效率要比 CommonJS 模块的加载方式高。当然，这也导致了没法引用 ES6 模块本身，因为它不是对象。
+import { stat, exists, readFile } from 'fs';   //加载 fs 的三个属性
 
-class H {
-    constructor() {
-        this.a = 'a'
-    }
+// 由于import是静态执行，所以不能使用表达式和变量，以及if语句，这些只有在运行时才能得到结果的语法结构。
+// 报错
+import { 'f' + 'oo' } from 'my_module';   // 表达式
 
-    b() {
-        return "b"
-    }
+// 报错
+let module = 'my_module';      // 变量
+import { foo } from module;
+
+// 报错
+if (x === 1) {                // if语句 
+  import { foo } from 'module1';
+} else {
+  import { foo } from 'module2';
 }
 
-var h = new H()
 
+// profile.js
+export var firstName = 'Michael';
+export var lastName = 'Jackson';
+export var year = 1958;
 
-function A(){
-    this.a = 'a';
+// profile.js
+var firstName = 'Michael';
+var lastName = 'Jackson';
+var year = 1958;
+
+export {firstName, lastName, year};
+
+export function multiply(x, y) {
+  return x * y;
+};
+
+// 报错
+export 1;
+
+// 报错
+var m = 1;
+export m;
+
+// 上面两种写法都会报错，因为没有提供对外的接口。第一种写法直接输出1，
+// 第二种写法通过变量m，还是直接输出1。1只是一个值，不是接口。正确的写法是下面这样。
+
+// 正确写法
+// 写法一
+export var m = 1;
+
+// 写法二
+var m = 1;
+export {m};
+
+// 写法三
+var n = 1;
+export {n as m};
+
+// export default   导入时可以用任意名字
+// export default就是输出一个叫做default的变量或方法，然后系统允许你为它取任意名字。
+// export-default.js
+export default function () {
+  console.log('foo');
 }
+// import-default.js
+import customName from './export-default';
+customName(); // 'foo'
 
-A.prototype = {
-    b:"b",
-    c:function(){
-        return c
-    }
-}
 
-class A {
-    constructor(){
-        this.a = 'a'
-    }
-    c(){
-        return c
-    }
-}
-A.prototype.b = 'b'
+
+
+
+
+
+
 
 
 
