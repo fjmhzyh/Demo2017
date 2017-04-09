@@ -554,7 +554,12 @@ var double = (x) => x*2;
 //  箭头函数省略了括号和return
 x => x * x
 //返回一个对象
+// SyntaxError:
+x => { foo: x }
+// 正确写法,加个括号
 x => ({ foo: x })
+// 2个以上参数
+(x,y) => x+y
 
 
 setTimeout()

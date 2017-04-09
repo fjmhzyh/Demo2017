@@ -1,3 +1,11 @@
+// react 环境
+// 生成package.json  webpack.config.js
+// npm install react react-dom --save     安装react  安装babel
+// npm install babel-core babel-loader babel-preset-es2015 babel-preset-react --save-dev
+// 配置webpack.config.js  entry output module
+// webpack --progress --colors --watch  带有进度和颜色,自动监听
+
+
 前端开发中,性能消耗最大的就是DOM操作
 react最小化了重绘,避免了不必要的DOM操作
 
@@ -30,6 +38,20 @@ Data Flow   // '单向数据绑定' 是 React 推崇的一种应用架构的方�
 //都先在虚拟 DOM 上发生，然后再将实际发生变动的部分，反映在真实 DOM上，这种算法叫做 DOM diff 。
 //它可以极大提高网页的性能表现。
 
+
+JSX 的基本语法规则：遇到 HTML 标签（以 < 开头），就用 HTML 规则解析；
+遇到代码块（以 { 开头），就用 JavaScript 规则解析。
+ReactDOM.render(
+  <div>
+  {
+    names.map(function (name) {
+      return <div>Hello, {name}!</div>    // 这里需要一个key唯一标示符,否则报错
+    })  
+  }
+  </div>,
+  document.getElementById('example')
+);
+
 JSX 将 { } 中的内容渲染为动态内容
 
 // 属性的设置
@@ -39,7 +61,7 @@ JSX 将 { } 中的内容渲染为动态内容
 <div className={ if(this.state.isCompleted){'completed'} }></div>   判断  /
 
 // 非DOM属性
-key // key是可选的唯一标示符,可以提高渲染效率
+key // key是可选的唯一标示符,可以提高渲染效率。当key相同时,只渲染第一个key,且发出警告
 ref // 父组件对子组件保持引用
 
 // 特殊属性,保留关键字
@@ -86,12 +108,47 @@ class MyComponent extends React.Component {
   }
 }
 
+props                // 父子组件通信 
+回调函数 和 事件机制            //子组件向付组件通信  
+getChildContext()    //跨组件通信   
+// 我们并不推荐使用context,它就像是一个全局变量,大部分情况下,全局变量正是导致应用走向混乱的罪魁祸首。
+// 给组件带来了外部依赖的副作用。context比较适合不会更改的全局信息,如界面主题,用户信息
+import { EventEmitter } from 'events';
+var emmiter = new EventEmitter();
+
+
+
+mixins
+// MDN解释：把任意多个源对象所拥有的自身可枚举的属性复制给目标对象,然后返回目标对象
+// 在react中,mixins数组可以增加多个mixin,但不允许出现同名方法
+mixins的作用
+// 工具方法 共享一些工具方法,在各个组件直接调用
+// 生命周期继承 如果有很多mixin 来定义componentDidMount这个周期,react会合并起来执行。
+// 也可以用在getInitialState的结果上,做state的合并,props也是这样合并的
+
+// ES6 classes 形式构建组件时,并不支持mixins
+// mixins 可能被 high order 替代。
+
+纯函数  // kiss原则 keep it simple,stupid
+// 给定相同的输入,返回相同的输出。不能使用Math.random() new Date()等方法
+// 过程没有副作用,所有功能就是返回一个新的值，没有其他行为，尤其是不得修改外部变量的值。
+// 没有额外的状态依赖,完全独立于外部状态。方法内的状态只在方法的生命周期内存活
+
+
+immutable  // 不可改变的   
+mutable    // 易变的
+add ons    // 附件 扩展
 
 // state
 state只关心每个组件自己内部的状态,这些状态只能在组件内部改变。
 setState()  // setState() 是一个异步方法,一个生命周期内的setState()方法会合并操作
+// setState通过一个队列机制更新。当执行setState时,会将需要更新的state合并后放入状态队列,而不是立即更新
+this.state.value = 1 //千万不要这样写。这是一种低效的做法,而且很有可能被之后的操作替换。
+// 这种做法不会将state放入状态队列,当下次调用setState时,将忽略之前的修改,而造成无法预知的错误
 
-
+// 如果在 shouldComponentUpdate 或 componentWillUdate 中调用  调用 setState。会调用内部的updateComponent
+// 方法,而updateComponent 又会调用shouldComponentUpdate和componentWillUdate。造成循环调用,使浏览器内存
+// 占满后崩溃
 
 // virtual dom 在内存中以对象的形式存在
 // syntheticEvent 合成事件可以给 virtual dom 添加事件,同样支持冒泡,所有的事件都自动绑定到最外层
@@ -113,24 +170,52 @@ class Demo extends Component {
 }
 
 
+// 前端架构
+MVC // 一个view对应一个model,model的任何改变会应用到view中，view的操作通过controller应用到model中
+// view对应js中的模板引擎。view是model的可视化。用户可以与view交互，读取或编辑model
+// 问题：项目越大，逻辑越复杂，view和model越来越多。
+MVVM 
+// ViewModel取代了Controller。关键是 数据绑定 view的数据状态发生可以直接影响VM，反之亦然
+Flux  
+// Flux不是库,也不是框架,而是一种架构思想。其核心是单向数据流。
+// 在flux中,数据从action 到dispatcher,再到store,再到view的路线是不可逆的 
+Redux 
+// 原则一
+// 单一数据源，MVC中需要N个model,model直接可以互相监听,触发事件。这些在redux中是不允许的
+// 使用单一数据源的好处是 整个应用的状态 都保存在一个对象中。
+// 我们可以随时提取出 整个应用的状态 进行持久化。此外,这也为服务端渲染提供了可能
+// 数据源过去判断的问题,可以通过Redux的工具函数combineReducers来解决
+
+// 原则二
+// 状态是只读的
+// 我们定义一个reducer,根据当前触发的action对应用当前的状态进行迭代,并返回一个新的状态。而不是进行修改
+
+// 原则三
+// 状态修改由纯函数完成
+// 每一个reducer都是一个纯函数。同样的输入得到同样的输出。使状态的修改变得简单，可测试。
+
+
+
+
+
 // 表单
 // 受控组件,每当表单状态发生变化,都会被写入到组件的state中,这种组件成为受控组件
 // 表单初始值来自state,即单向数据绑定,通过onChange事件,将新的表单数据传回state,完成双向数据绑定
 // 这也意味着我们在setState之前,可以对表单进行清洗和校验
-inputHandler:function(name,e){
-  var {value} = e.target
-    switch(name){
-      case 'user':
-        value = value.substring(0,5).toUpperCase()
-        break;
-      case 'age':
-        value =  isNaN(value) ? 0 : Number(value);
-        break;
-    }
-  this.setState({
-      [name]:value
-  })
-},
+// inputHandler:function(name,e){
+//   var {value} = e.target
+//     switch(name){
+//       case 'user':
+//         value = value.substring(0,5).toUpperCase()
+//         break;
+//       case 'age':
+//         value =  isNaN(value) ? 0 : Number(value);
+//         break;
+//     }
+//   this.setState({
+//       [name]:value
+//   })
+// },
 <input type="text" value={user} onChange={this.inputHandler.bind(this,'user')} />
 <input type="text" value={age} onChange={this.inputHandler.bind(this,'age')} 
 // 非受控表单  使用 defaultValue 和 defaultChecked 来表示
@@ -139,17 +224,22 @@ inputHandler:function(name,e){
   <input type="text" ref='name' defaultValue='hangzhou'/>
   <button type='submit'>submit</button>
 </form>
-handleSubmit:function(e){
-  e.preventDefault()
-  const {value} = this.refs.name;  // 拿值
-  console.log(value);
-},
-
+// handleSubmit:function(e){
+//   e.preventDefault()
+//   const {value} = this.refs.name;  // 拿值
+//   console.log(value);
+// }
 
 
 // style
 { width:10 }  // 自动添加px
-// 使用classname库
+// 使用classnames库
+
+
+
+
+
+
 
 
 
@@ -215,7 +305,7 @@ componentWillReceiveProps()  //将要收到props
 // 除非你有特别的理由，建议总是用 React 的方式处理事件。
 
 参数传递
-return <p onClick={this.handleClick.bind(this, 'extra param')}>;
+return <p onClick={this.handleClick.bind(this, 'extra param')} />;
 
 Mixin 
 // 虽然组件的原则就是模块化，彼此之间相互独立，
@@ -425,10 +515,37 @@ browserHistory  // 真实的url
 
 
 
+// 前端架构
+MVC // 一个view对应一个model,model的任何改变会应用到view中，view的操作通过controller应用到model中
+// view对应js中的模板引擎。view是model的可视化。用户可以与view交互，读取或编辑model
+// 问题：项目越大，逻辑越复杂，view和model越来越多。
+MVVM 
+// ViewModel取代了Controller。关键是 数据绑定 view的数据状态发生可以直接影响VM，反之亦然
+Flux  
+// Flux不是库,也不是框架,而是一种架构思想。其核心是单向数据流。
+// 在flux中,数据从action 到dispatcher,再到store,再到view的路线是不可逆的 
+Redux 
+// 原则一
+// 单一数据源，MVC中需要N个model,model直接可以互相监听,触发事件。这些在redux中是不允许的
+// 使用单一数据源的好处是 整个应用的状态 都保存在一个对象中。
+// 我们可以随时提取出 整个应用的状态 进行持久化。此外,这也为服务端渲染提供了可能
+// 数据源过去判断的问题,可以通过Redux的工具函数combineReducers来解决
+
+// 原则二
+// 状态是只读的
+// 我们定义一个reducer,根据当前触发的action对应用当前的状态进行迭代,并返回一个新的状态。而不是进行修改
+
+// 原则三
+// 状态修改由纯函数完成
+// 每一个reducer都是一个纯函数。同样的输入得到同样的输出。使状态的修改变得简单，可测试。
 
 
-
-
+React拆分成React 和ReactDOM 的好处
+// 一个类库在核心逻辑上 和 平台实现 两个层面上进行拆分,保证了核心功能的最大程度跨平台复用
+react-redux
+// react-redux 提供了一个组件和一个api帮助react 和 redux 进行绑定。
+// 组件是<Provider/>  接受一个store作为props
+// API 是 connect()   提供了任意组件中获取store数据的功能
 
 // Redux
 // Redux 是一个有用的架构，但不是非用不可。事实上，大多数情况，你可以不用它，只用 React 就够了。
@@ -438,7 +555,11 @@ browserHistory  // 真实的url
 // 基本概念
 Store    // 保存数据的地方，你可以把它看成一个容器。整个应用只能有一个 Store。
 State    // Store对象包含所有数据。某个时点的数据集合，就叫做 State。
+// store 的 四个方法
 store.getState()  // 获取当前时刻的 State
+store.dispatch()  // 分发一个action
+store.subscribe() // 注册一个监听
+store.replaceReducer(nextReducer)  // 更新当前store里的reducer 一般开发时使用
 // Redux 规定， 一个 State 对应一个 View。只要 State 相同，View 就相同。
 // 你知道 State，就知道 View 是什么样，反之亦然。
 Action  // State 的变化，会导致 View 的变化。但是，用户接触不到 State，只能接触到 View。
