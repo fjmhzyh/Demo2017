@@ -989,8 +989,31 @@ customName(); // 'foo'
 
 
 
+// HTML5 History API
+// pushState方法会将当前的url添加到历史记录中，然后修改当前url为新url,但并不会发出任何请求。
+history.pushState(state, title, url)
+history.replaceState(state, title, url)
+state  // 可以放任意你想放的数据，它将附加到新url上，作为该页面信息的一个补充。
+title: // 顾名思义，就是document.title。不过这个参数目前并无作用，浏览器目前会选择忽略它。
+url:   // 新url，也就是你要显示在地址栏上的url。
 
+window.onpopstate  
+// 一般来说，每当url变动时，popstate事件都会被触发。
+// 但若是调用pushState来修改url，该事件则不会触发，
+// 该事件有一个参数，就是上文pushState方法的第一个参数state。
 
+window.onpopstate = function(event) {
+  alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+};
+history.pushState({page: 1}, "title 1", "?page=1");
+history.pushState({page: 2}, "title 2", "?page=2");
+
+// IE6到IE9是不支持pushState的，要修改Url，只能利用Url的Hash，也即是#号。
+// 你可以随意找个网站试一下，在url后面加上#号和任意内容，页面并不会刷新。
+// 此时点击后退也只会回到上一条#号，同样不会刷新。
+// 那么我们只需把pushState(新url)换成localtion.hash = 新url，
+// 把onpopstate事件换成onhashchange事件就可以兼容IE了。
+// QQ音乐，网易云音乐等就是使用这种方式。
 
 
 

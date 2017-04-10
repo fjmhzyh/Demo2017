@@ -1,9 +1,17 @@
 // react 环境
 // 生成package.json  webpack.config.js
 // npm install react react-dom --save     安装react  安装babel
-// npm install babel-core babel-loader babel-preset-es2015 babel-preset-react --save-dev
+// npm install babel-core babel-polyfill babel-loader babel-preset-es2015 babel-preset-react babel-preset-stage-0 --save-dev
+// 安装 react-router 和 redux
+// npm install react-router react-redux react-router-redux whatwg-fetch --save
 // 配置webpack.config.js  entry output module
 // webpack --progress --colors --watch  带有进度和颜色,自动监听
+
+// .babelrc
+{
+  "presets": ["es2015","react","stage-3"],    // 转码规则
+  "plugins": []
+}
 
 
 前端开发中,性能消耗最大的就是DOM操作
@@ -109,13 +117,12 @@ class MyComponent extends React.Component {
 }
 
 props                // 父子组件通信 
-回调函数 和 事件机制            //子组件向付组件通信  
+回调函数 和 事件机制            //子组件向父组件通信  
 getChildContext()    //跨组件通信   
 // 我们并不推荐使用context,它就像是一个全局变量,大部分情况下,全局变量正是导致应用走向混乱的罪魁祸首。
 // 给组件带来了外部依赖的副作用。context比较适合不会更改的全局信息,如界面主题,用户信息
 import { EventEmitter } from 'events';
 var emmiter = new EventEmitter();
-
 
 
 mixins
@@ -137,7 +144,7 @@ mixins的作用
 
 immutable  // 不可改变的   
 mutable    // 易变的
-add ons    // 附件 扩展
+add ons    // 附件 插件 扩展 
 
 // state
 state只关心每个组件自己内部的状态,这些状态只能在组件内部改变。
@@ -290,9 +297,9 @@ componentWillMount()
 componentDidMount()    // 在这里请求数据,成功后setState刷新UI
 componentWillUpdate(object nextProps, object nextState)
 componentDidUpdate(object prevProps, object prevState)
-componentWillUnmount()
-shouldComponentUpdate()   // return boolean 确定是否要更新
-componentWillReceiveProps()  //将要收到props
+componentWillUnmount()    // 记得解除原生事件的监听。合成事件会自动销毁
+shouldComponentUpdate()   // return boolean 确定是否要更新,做性能优化使用
+componentWillReceiveProps()  //将要收到props,第一次render时不会触发
 
 合成事件
 // “合成事件”会以事件委托（event delegation）的方式绑定到组件最上层，
@@ -524,7 +531,9 @@ MVVM
 Flux  
 // Flux不是库,也不是框架,而是一种架构思想。其核心是单向数据流。
 // 在flux中,数据从action 到dispatcher,再到store,再到view的路线是不可逆的 
+// 缺点：太过松散，哪里发请求,如何处理异步流
 Redux 
+// Redux 是一个可预测的状态容器
 // 原则一
 // 单一数据源，MVC中需要N个model,model直接可以互相监听,触发事件。这些在redux中是不允许的
 // 使用单一数据源的好处是 整个应用的状态 都保存在一个对象中。
@@ -556,7 +565,7 @@ react-redux
 Store    // 保存数据的地方，你可以把它看成一个容器。整个应用只能有一个 Store。
 State    // Store对象包含所有数据。某个时点的数据集合，就叫做 State。
 // store 的 四个方法
-store.getState()  // 获取当前时刻的 State
+store.getState()  // 获取当前时刻的 State   
 store.dispatch()  // 分发一个action
 store.subscribe() // 注册一个监听
 store.replaceReducer(nextReducer)  // 更新当前store里的reducer 一般开发时使用
