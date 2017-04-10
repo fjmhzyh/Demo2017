@@ -1,15 +1,20 @@
 // react 环境
 // 生成package.json  webpack.config.js
-// npm install react react-dom --save     安装react  安装babel
-// npm install babel-core babel-polyfill babel-loader babel-preset-es2015 babel-preset-react babel-preset-stage-0 --save-dev
+npm install react react-dom --save     
+npm install express babel-core babel-polyfill babel-loader babel-preset-es2015 babel-preset-react babel-preset-stage-0 babel-preset-react-hmre webpack webpack-dev-middleware webpack-hot-middleware --save-dev
 // 安装 react-router 和 redux
 // npm install react-router react-redux react-router-redux whatwg-fetch --save
 // 配置webpack.config.js  entry output module
 // webpack --progress --colors --watch  带有进度和颜色,自动监听
 
+
+
+
+
+
 // .babelrc
 {
-  "presets": ["es2015","react","stage-3"],    // 转码规则
+  "presets": ["es2015","react","stage-0"],    // 转码规则
   "plugins": []
 }
 
@@ -619,4 +624,12 @@ store.subscribe(listener); // Store允许使用store.subscribe设置监听,一�
 var unsubscribe = store.subscribe(listener);
 unsubscribe()  // 解除监听
 
+
+// 服务端渲染
+// SPA首屏加载太慢,导致白屏。react的解决方案就是服务端渲染
+
+// 优势
+// 利于SEO，可以让搜索引擎更容易抓取页面的meta信息以及其他SEO信息
+// 加速渲染 用户首次打开时，已经是渲染好的页面，打开速度更快
+// 服务端和客户端共享某些代码，避免重复定义
 
