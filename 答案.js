@@ -954,7 +954,12 @@ var firstName = 'Michael';
 var lastName = 'Jackson';
 var year = 1958;
 
-export {firstName, lastName, year};
+export {firstName, lastName, year}; //优先选择这种,在export后面加个大括号,放入要导出的变量
+
+var a=1
+export {a}      // 两者等价
+export var a=1  // 两者等价
+
 
 export function multiply(x, y) {
   return x * y;
@@ -984,14 +989,29 @@ export {n as m};
 
 // export default   导入时可以用任意名字
 // export default就是输出一个叫做default的变量或方法，然后系统允许你为它取任意名字。
+// export default 可以输出匿名函数,导入时可以不用大括号
 // export-default.js
 export default function () {
   console.log('foo');
 }
 // import-default.js
-import customName from './export-default';
+import customName from './export-default';  //不用大括号
 customName(); // 'foo'
 
+
+export function add(){}
+export function minus(argument) {}
+
+var a = 1;
+var b = 2;
+var c = function(){
+    console.log('c')
+}
+export {a,b,c}
+import {a,b,c} from './component/hello';
+import * as hello from './component/hello';
+hello.a 
+hello.c()
 
 
 

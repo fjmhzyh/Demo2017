@@ -9,7 +9,7 @@ npm install express babel-core babel-polyfill babel-loader babel-preset-es2015 b
 // webpack --progress --colors --watch  带有进度和颜色,自动监听
 
 // npm install css-loader style-loader --save-dev
-
+// npm install react-router-dom --save
 
 // .babelrc
 {
