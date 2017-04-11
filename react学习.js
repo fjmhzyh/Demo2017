@@ -3,13 +3,12 @@
 npm install react react-dom --save     
 npm install express babel-core babel-polyfill babel-loader babel-preset-es2015 babel-preset-react babel-preset-stage-0 babel-preset-react-hmre webpack webpack-dev-middleware webpack-hot-middleware --save-dev
 // 安装 react-router 和 redux
+// npm install prop-types --save
 // npm install react-router react-redux react-router-redux whatwg-fetch --save
 // 配置webpack.config.js  entry output module
 // webpack --progress --colors --watch  带有进度和颜色,自动监听
 
-
-
-
+// npm install css-loader style-loader --save-dev
 
 
 // .babelrc
@@ -150,6 +149,8 @@ mixins的作用
 immutable  // 不可改变的   
 mutable    // 易变的
 add ons    // 附件 插件 扩展 
+suffix     // 后缀
+
 
 // state
 state只关心每个组件自己内部的状态,这些状态只能在组件内部改变。
@@ -633,3 +634,80 @@ unsubscribe()  // 解除监听
 // 加速渲染 用户首次打开时，已经是渲染好的页面，打开速度更快
 // 服务端和客户端共享某些代码，避免重复定义
 
+
+
+
+
+
+react-router4
+// 那么 react-router 和react-router-dom 是不是两个都要引用呢？
+// 不同之处就是后者比前者多出了 <Link> <BrowserRouter> 这样的 DOM 类组件。
+// 因此我们只需引用 react-router-dom 这个包就行了。
+// 当然，如果搭配 redux ，你还需要使用 react-router-redux。
+
+<BrowserRouter>
+// A <Router> that uses the HTML5 history API (pushState, replaceState and the popstate event) 
+// to keep your UI in sync with the URL.
+
+// 作用：为所有位置添加一个基准URL
+// 使用场景：假如你需要把页面部署到服务器的二级目录，你可以使用 basename 设置到此目录
+<BrowserRouter basename="/minooo" />
+
+// 作用：导航到此页面前执行的函数，默认使用 window.confirm
+// 使用场景：当需要用户进入页面前执行什么操作时可用，不过一般用到的不多
+const getConfirmation = (message, callback) => {
+  const allowTransition = window.confirm(message)
+  callback(allowTransition)
+}
+<BrowserRouter getUserConfirmation={getConfirmation('Are you sure?', yourCallBack)} />
+
+// 如果为true,则强制刷新页面,可能只有在不支持H5的浏览器中使用
+<BrowserRouter forceRefresh={!supportsHistory} />
+
+// keyLength: number  The length of location.key. Defaults to 6.
+<BrowserRouter keyLength={12}/>
+
+
+<HashRouter>
+// A <Router> that uses the hash portion of the URL (i.e. window.location.hash) 
+// to keep your UI in sync with the URL.
+
+// Route 的三种渲染方法
+<Route component>
+<Route render>
+<Route children>
+
+// 三种方法都接受三个参数
+match
+//{"path":"/topics/:topicId","url":"/topics/rendering","isExact":true,"params":{"topicId":"rendering"}}
+location
+//{"pathname":"/topics/rendering","search":"","hash":"","key":"uw98jh"}
+history
+//{"length":42,"action":"PUSH","location":{"pathname":"/topics/rendering","search":"","hash":"","key":"uw98jh"}}
+
+// example
+<Route path="/user/:username" component={User}/>
+const User = ({ match }) => {   // 组件里拿到了match参数
+  return <h1>Hello {match.params.username}!</h1>
+}
+// exact: bool 如果为 true，path 为 '/one' 的路由将不能匹配 '/one/two'，反之，亦然。
+// strict: bool 如果为 true。path 为 '/one/' 将不能匹配 '/one' 但可以匹配 '/one/two'。
+<Route exact strict path="/one" component={One}/>
+
+<Link>
+// to:string  作用：跳转到指定路径
+<Link to="/courses" />  
+// to:object  作用：携带参数跳转到指定路径
+<Link to={ {pathname: '/course',search: '?sort=name',state: { price: 18 }} } />
+
+
+<NavLink>
+// activeClassName: string  导航选中激活时候应用的样式名，默认样式名为 active
+<NavLink to="/about" activeClassName="selected">MyBlog</NavLink>
+// activeStyle: object  如果不想使用样式名就直接写style
+<NavLink to="/about" activeStyle={{ color: 'green', fontWeight: 'bold' }}>MyBlog</NavLink>
+
+// exact 若为 true，只有当访问地址严格匹配时激活样式才会应用
+// 若为 true，只有当访问地址后缀斜杠严格匹配（有或无）时激活样式才会应用
+// isActive A function to add extra logic for determining whether the link is active.
+<NavLink exact strict  isActive={func} to="/profile">Profile</NavLink>

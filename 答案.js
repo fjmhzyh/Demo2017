@@ -920,6 +920,12 @@ s.staticMethod()  // s.staticMethod is not a function
 // import 和 export
 // 这种加载称为“编译时加载”或者静态加载，即 ES6 可以在编译时就完成模块加载，
 // 效率要比 CommonJS 模块的加载方式高。当然，这也导致了没法引用 ES6 模块本身，因为它不是对象。
+
+// import后面的from指定模块文件的位置，可以是相对路径，也可以是绝对路径，.js路径可以省略。
+// 如果只是模块名，不带有路径，那么必须有配置文件，告诉 JavaScript 引擎该模块的位置。
+import {firstName, lastName, year} from './profile';   // 路径
+import {myMethod} from 'util';  // 模块 必须配置该模块的位置
+
 import { stat, exists, readFile } from 'fs';   //加载 fs 的三个属性
 
 // 由于import是静态执行，所以不能使用表达式和变量，以及if语句，这些只有在运行时才能得到结果的语法结构。
