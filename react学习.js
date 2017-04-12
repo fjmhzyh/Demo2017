@@ -677,9 +677,17 @@ const getConfirmation = (message, callback) => {
 <Route render>
 <Route children>
 
+// children渲染的元素不会被替换,render渲染出的元素会被替换掉
+<Route exact path={match.url} children={() => (<h3>halo</h3>)}/>
+
+
 // 三种方法都接受三个参数
 match
-//{"path":"/topics/:topicId","url":"/topics/rendering","isExact":true,"params":{"topicId":"rendering"}}
+//{"match":{"path":"/topic/:topicId","url":"/topic/react","isExact":true,"params":{"topicId":"react"}}}
+match.path // 就是Route里定义的path,可能带有参数
+match.url  // 当前的url
+match.params // 路径参数
+
 location
 //{"pathname":"/topics/rendering","search":"","hash":"","key":"uw98jh"}
 history
@@ -711,3 +719,12 @@ const User = ({ match }) => {   // 组件里拿到了match参数
 // 若为 true，只有当访问地址后缀斜杠严格匹配（有或无）时激活样式才会应用
 // isActive A function to add extra logic for determining whether the link is active.
 <NavLink exact strict  isActive={func} to="/profile">Profile</NavLink>
+
+<Switch>
+// 只渲染出第一个与当前访问地址匹配的 <Route> 或 <Redirect>。
+// 思考如下代码，如果你访问 /about，那么组件 About User Nomatch 都将被渲染出来，
+// 因为他们对应的路由与访问的地址 /about 匹配。
+// 这显然不是我们想要的，我们只想渲染出第一个匹配的路由就可以了，于是 <Switch> 应运而生！
+<Route path="/about" component={About}/>
+<Route path="/:user" component={User}/>
+<Route component={NoMatch}/>
