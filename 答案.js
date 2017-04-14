@@ -546,7 +546,29 @@ offsetLeft    //左边距离
 
 scrollHeight   //只读属性。返回元素内容的整体尺寸，包括元素看不见的部分（需要滚动才能看见的）。
 // 返回值 包括padding，但不包括margin和border 。
+var xScrollWidth = element.scrollWidth;  // 获取宽度
+var intElemScrollTop = someElement.scrollTop;  // 获得滚动的距离
+Element.scrollLeft  // 属性可以读取或设置元素滚动条到元素左边的距离。
+window.scroll(x,y)  // 滚动
 
+
+// 可视区的真实宽度和高度
+document.body.offsetWidth 
+document.body.offsetHeight
+// 在声明了DOCTYPE的浏览器中，可以用以下来获取浏览器显示窗口大小
+document.documentElement.clientWidth 
+document.documentElement.clientHeight
+// IE9+
+window.innerWidth 
+window.innerHeight
+
+// 判断滚动条是否到底
+// body高度 =  可视区域的高度 + 滚动距离
+window.innerHeight;        //可视区域的高度
+document.body.scrollTop;   // 滚动距离
+parseInt(window.innerHeight, 10)+parseInt(document.body.scrollTop, 10)
+var style = document.body.currentStyle?e.currentStyle:window.getComputedStyle(document.body,null)
+parseFloat(style.height); 
 
 // 箭头函数
 var double = (x) => x*2;
@@ -569,7 +591,7 @@ setTimeout()
 // 绝对定位元素的宽度需要自己设置
 // left:0;right:0 撑满屏幕
 
-
+window.scroll(x,y)  // 滚动
 window.resizeTo(800,600)
 window.moveTo(200,200)
 window.open('https://www.baidu.com',"_blank",'width=200,height=200')

@@ -4,12 +4,11 @@ npm install react react-dom --save
 npm install express babel-core babel-polyfill babel-loader babel-preset-es2015 babel-preset-react babel-preset-stage-0 babel-preset-react-hmre webpack webpack-dev-middleware webpack-hot-middleware --save-dev
 // 安装 react-router 和 redux
 // npm install prop-types --save
-// npm install react-router react-redux react-router-redux whatwg-fetch --save
 // 配置webpack.config.js  entry output module
 // webpack --progress --colors --watch  带有进度和颜色,自动监听
-
 // npm install css-loader style-loader --save-dev
 // npm install react-router-dom --save
+// npm install whatwg-fetch --save
 
 // .babelrc
 {
@@ -728,3 +727,38 @@ const User = ({ match }) => {   // 组件里拿到了match参数
 <Route path="/about" component={About}/>
 <Route path="/:user" component={User}/>
 <Route component={NoMatch}/>
+
+
+
+// 组件的生命周期
+// componentWillMount 和 componentDidMount 都只会在组件初始化时运行一次
+componentWillMount() {
+    // 在这里调用setSate 组件会更新state,但组件只渲染一次。
+    // 初始化时的state都可以放在this.state
+}
+
+componentDidMount() {
+    // 在这里调用setSate 组件会再次更新state,组件将渲染两次,这并不是什么好事。
+}
+
+componentWillUnmount() {
+    // 组件卸载时,我们常常执行一些清理方法,如事件回收或是清楚定时器 
+}
+
+componentWillReceiveProps(nextProps) {
+    // 如果组件是由父组件更新props而更新的,那么会先执行此方法
+    // 这里是setState的机会
+}
+
+shouldComponentUpdate(nextProps, nextState) {
+    // 不用在这里setState,否则无限循环
+}
+
+componentWillUpdate(nextProps, nextState) {
+    // 不用在这里setState,否则无限循环
+}
+
+componentDidUpdate(prevProps, prevState) {
+  
+}
+

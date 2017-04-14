@@ -1,0 +1,32 @@
+/* 文字不换行 */
+{
+	white-space: nowrap
+}
+
+
+/* flex布局 */
+.box{
+	display: -webkit-flex;
+	display: flex;
+	flex-direction:row;  /* row横向 column纵向 */
+	flex-wrap: nowrap;   /* wrap 排不下换行 | wrap-reverse 换行，第一行在下方。*/
+	flex-flow:<flex-direction> || <flex-wrap>; /* flex-direction属性和flex-wrap属性的简写形式 */
+	align-items: center  /* 左右居中对齐  flex-start | flex-end | center | baseline | stretch;*/
+	justify-content:center; /* 上下居中对齐  flex-start | flex-end | center | baseline | stretch;*/
+}
+
+.a{
+	flex-grow:0;    /* default 0 如果存在剩余空间，也不放大。*/
+	flex-shrink: 1; /* default 1 如果空间不足，该项目将缩小。*/
+	flex-basis:auto;
+	flex:auto;  /* auto (1 1 auto) none (0 0 auto) 最好写完整*/
+}
+
+/* a固定宽度,b自适应宽度*/
+.a{
+	flex:0 0 100px;
+}
+
+.b{
+	flex:1 1 auto;
+}
