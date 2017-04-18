@@ -32,3 +32,63 @@
 }
 
 
+/* css3 选择器 */
+
+/* :empty 选择没有内容的空元素 */
+p:empty {
+  display: none;
+}​
+
+/* :first-child 选择父元素的第一个子元素 */
+/* 第一个li设置为红色 */
+ol > li:first-child{
+  color: red;		
+}
+
+/* :not 可以选择除某个元素之外的所有元素 */
+input:not([type="submit"]){
+  border:1px solid red;
+}
+
+/* 属性选择器 */
+a[class^=icon]{
+  background: green;
+  color:#fff;
+}
+a[href$=pdf]{
+  background: orange;
+  color: #fff;
+}
+a[title*=more]{
+  background: blue;
+  color: #fff;
+}
+
+/* :read-only :read-write  :enable :disable*/
+input[type="text"]:-moz-read-only{
+  border-color: #ccc;
+}
+input[type="text"]:read-only{
+  border-color: #ccc;
+}
+input[type="text"]:-moz-read-write{
+  border:2px solid red;
+}
+input[type="text"]:red-write{
+  border:2px solid red;
+}
+
+input[type="text"]:enabled {
+  border: 1px solid #f36;
+  box-shadow: 0 0 5px #f36;
+}
+
+input[type="text"]:disabled{
+  box-shadow: none;
+}
+
+/*  box-shadow */
+box-shadow: X轴偏移量 Y轴偏移量 [阴影模糊半径] [阴影扩展半径] [阴影颜色] [投影方式];
+
+/* background属性 */
+background ： [color] | [image] | [background-position][/background-size] | [background-repeat] | [background-attachment] | [background-clip] | [background-origin],...
