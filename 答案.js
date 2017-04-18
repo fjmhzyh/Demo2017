@@ -21,6 +21,40 @@ github 上的文件和本地冲突时, git pull 会合并到本地文件
 将变量设置为null,切断对值的引用,让值脱离执行环境。垃圾回收器下次运行时,会自动删除这些值并释放内存
 
 
+// JavaScript引擎的工作方式是，先解析代码，获取所有被声明的变量，然后再一行一行地运行
+// 申明提升,赋值无法提升
+console.log(a);   // undefined  说明变量a已经申明,但没有赋值
+var a = 1;
+
+// 执行过程
+var a;
+console.log(a);
+a = 1;
+
+// 没有var的情况,申明不会提升
+console.log(aa);  // aa is not defined;   说明变量 没有申明
+aa =1;
+
+// 函数申明，可以提升
+say()      // hello
+function say(){
+    console.log('hello')
+}
+
+// 函数表达式,
+go()    // go is not defined  说明变量go没有申明
+go = function(){
+    console.log('go')
+}
+
+// 有var 的函数表达式
+sing()  // sing is not a function  说明sing已经被申明   var申明的变量会发生申明提升
+var sing = function(){
+    console.log('sing')
+}
+
+
+
 //解除事件监听
 第二个参数不能是匿名函数,否则无法解除监听
 //------------失败案例--------------

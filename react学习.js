@@ -468,52 +468,6 @@ var tom = (function(){
 
 ﻿
 
-
-// react-router
-
-//Router  Route path  component
-<Router history={hashHistory}>
-  <Route path="/" component={App}/>
-  <Route path="/repos" component={Repos}/>
-  <Route path="/about" component={About}/>
-</Router>
-
-// Link to  activeStyle  activeClassName
-<ul role="nav">
-  <li><Link to="/about" activeClassName="active" >About</Link></li>
-  <li><Link to="/repos" activeStyle={{ color: 'red' }} >Repos</Link></li>
-</ul>
-
-// 首页
-<IndexRoute component={Home}/>
-
-
-// 嵌入式路由 页面共享
-<Router history={hashHistory}>
-  <Route path="/" component={App}>
-    {/* make them children of `App` */}
-    <Route path="/repos" component={Repos}/>
-    <Route path="/about" component={About}/>
-  </Route>
-</Router>
-
-<div>
-  <h1>React Router Tutorial</h1>
-  <ul role="nav">
-    <li><Link to="/about">About</Link></li>
-    <li><Link to="/repos">Repos</Link></li>
-  </ul>
-  {this.props.children}
-</div>
-
-
-//  history={browserHistory}
-hashHistory     // 开发环境
-browserHistory  // 真实的url
-
-//首先 browserHistory 其实使用的是 HTML5 的 History API，浏览器提供相应的接口来修改浏览器的历史记录；
-//而 hashHistory 是通过改变地址后面的 hash 来改变浏览器的历史记录；
-
 //History API 提供了 pushState() 和 replaceState() 方法来增加或替换历史记录。
 //而 hash 没有相应的方法，所以并没有替换历史记录的功能。
 //但 react-router 通过 polyfill 实现了此功能，具体实现没有看，好像是使用 sessionStorage。
@@ -636,7 +590,8 @@ unsubscribe()  // 解除监听
 
 
 
-
+// 什么是路由
+// 在web开发中，'route'是指根据url分配到对应的处理程序。
 
 react-router4
 // 那么 react-router 和react-router-dom 是不是两个都要引用呢？
