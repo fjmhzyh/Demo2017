@@ -87,8 +87,9 @@ input[type="text"]:disabled{
   box-shadow: none;
 }
 
-/*  box-shadow */
+/*  box-shadow  默认投影方式是outset */
 box-shadow: X轴偏移量 Y轴偏移量 [阴影模糊半径] [阴影扩展半径] [阴影颜色] [投影方式];
+box-shadow: 0 0 10px #0CC;     /*  四周外发光 */
 
 /* background属性 */
 background ： [color] | [image] | [background-position][/background-size] | [background-repeat] | [background-attachment] | [background-clip] | [background-origin],...

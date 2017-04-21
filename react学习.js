@@ -3,7 +3,7 @@
 npm install react react-dom --save     
 npm install express babel-core babel-polyfill babel-loader babel-preset-es2015 babel-preset-react babel-preset-stage-0 babel-preset-react-hmre webpack webpack-dev-middleware webpack-hot-middleware --save-dev
 // 安装 react-router 和 redux
-// npm install prop-types --save
+// npm install prop-types --save     import PropTypes from 'prop-types';
 // 配置webpack.config.js  entry output module
 // webpack --progress --colors --watch  带有进度和颜色,自动监听
 // npm install css-loader style-loader --save-dev
@@ -559,6 +559,8 @@ const chatReducer = combineReducers({
   statusMessage,
   userName
 })
+// 返回一个state对象
+
 
 // 实际应用中，Reducer 函数不用像上面这样手动调用，store.dispatch方法会触发 Reducer 的自动执行。
 // 为此，Store 需要知道 Reducer 函数，做法就是在生成 Store 的时候，将 Reducer 传入createStore方法。
@@ -717,3 +719,38 @@ componentDidUpdate(prevProps, prevState) {
   
 }
 
+// redux
+// react 的 缺陷
+// 两个子组件如何相互通信,共享数据？  将共享数据作为父组件的state,作为props分发给子组件 
+// 子组件改变父组件的state ？ 父组件设置回调函数,作为props传给子组件
+
+// 为了所有可能的扩展问题，最容易想到的办法是把所有state集中放到所有组件顶层，然后分发给所有组件。
+// 为了有更好的state管理，就需要一个库来作为更专业的顶层state分发给所有React应用，这就是Redux。
+
+action  // 是纯声明式的数据结构，只提供事件的所有要素，不提供逻辑。
+reducer // 是一个匹配函数，action的发送是全局的：所有的reducer都可以捕捉到并匹配与自己相关与否，
+// 相关就拿走action中的要素进行逻辑处理，修改store中的状态，不相关就不对state做处理原样返回。
+store  // store是一个Object,负责存储状态 
+state  // 当前的状态  Object类型
+Provider  // 作为顶层app的分发点，它只需要store属性就可以了。它会将state分发给所有被connect的组件
+connect   // 是真正的重点，它是一个科里化函数,先绑定数据,再绑定组件
+
+// connect([mapStateToProps], [mapDispatchToProps], [mergeProps], [options])(MyComponent)
+// 设置参数,绑定组件。connect 函数不会修改传入的 React 组件,而是返回一个新的组件
+mapStateToProps(state, [ownProps]) 
+// 函数,返回一个对象。store更新时,将被调用.
+// If you don't want to subscribe to store updates, pass null or undefined in place of mapStateToProps
+// ownProps 可选 如果有 将被当做参数传入组件
+ownProps 是指组件自身的props
+mapDispatchToProps(dispatch, [ownProps])
+// 函数/对象 If an object is passed, each function inside it is assumed to be a Redux action creator. 
+// If a function is passed, it will be given dispatch
+mergeProps(stateProps, dispatchProps, ownProps)
+// 函数 
+// If you omit it, Object.assign({}, ownProps, stateProps, dispatchProps) is used by default.
+options
+// 对象 可选
+
+combineReducers(reducers)
+// 随着应用变得复杂，需要对 reducer 函数 进行拆分，拆分后的每一块独立负责管理 state 的一部分。
+// 返回一个 function。 最终生成一个state对象,每个reducer是state的一个属性

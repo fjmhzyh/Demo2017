@@ -781,7 +781,9 @@ Object.defineProperty(obj,"test",{
 });
 
 
-
+a.prototype.get = function(){
+    console.log('aa')
+}
 
 
 
@@ -823,6 +825,7 @@ var rect = new Rectangle();
 var o1 = { a: 1 };var o2 = { b: 2 };var o3 = { c: 3 };
 var obj = Object.assign(o1, o2, o3);   // 合并3个对象,返回target对象
 // 属性名冲突时,用source的属性替换target的属性
+
 
 
 
@@ -926,7 +929,7 @@ class A {
     }
 }
 
-//  extends关键字实现继承
+// extends关键字实现继承
 class B extends A {
     // 此时 A 和 B 一模一样
     // 这里隐式调用了constructor方法,并调用了super()方法
@@ -1100,21 +1103,41 @@ history.pushState({page: 2}, "title 2", "?page=2");
 
 
 
+// 关于数组 
 
+// 修改原数组
+Array.protoype.push()     // 返回数组的长度
+Array.protoype.pop()      // 从一个数组中删除最后一个元素，并将该值返回给调用者。
+Array.prototype.shift()   // 从数组中删除第一个元素，并返回该元素的值
+Array.prototype.unshift() // 返回数组的长度
 
+// 返回新数组,浅拷贝
+Array.prototype.slice()   // 截取数组的一部分浅拷贝到一个新数组对象，并返回。
 
+var a = [1,[2,3,4],5]
+var b =a.slice(1,2)
+a[1].push(10);
+console.log(b[0])  // [2,3,4,10]
 
+Array.prototype.concat()   // 浅拷贝,返回新数组
 
+// Object.assign  适用于浅拷贝
+var o1 = { a: 1 };var o2 = { b: 2 };var o3 = { c: 3 };
+var obj = Object.assign(o1, o2, o3);
+o1.a=10
+obj.a  // 输出10
 
+// 深拷贝
+var a =[{id:0},{id:1}]
+var b = [...a,{id:4}]
 
+// 转成字符串实现深拷贝
+var s = JSON.stringify(a);
+var b = JSON.parse(s);
 
-
-
-
-
-
-
-
+// ES6 深拷贝对象
+var a = {id: 0, text: "111", completed: false}
+var b ={...a,completed:true}
 
 
 */
