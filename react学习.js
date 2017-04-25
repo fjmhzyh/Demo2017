@@ -37,8 +37,8 @@ react只更新DOM,而不读取。
 
 
 // 组件
-props  // 在调用这个组件的时候传入的属性
-state  // 当组件状态 state 有更改的时候，React 会自动调用组件的 render 方法重新渲染整个组件的 UI
+props  //  props是React用来让组件之间相互联系的一种机制。把组件看成一个函数，props就是它的参数。在调用这个组件的时候传入的属性
+state  // 在React中每个组件内部的状态称为state.当组件内部使用setState方法时，该组件会尝试重新渲染
 Virtual DOM  // 将组件 DOM 结构就是映射到这个 Virtual DOM 上,通过算法,计算出最小更新
 Data Flow   // '单向数据绑定' 是 React 推崇的一种应用架构的方式。 从父组件流向子组件
 // Data Flow 只是一种应用架构的方式，比如数据如何存放，如何更改数据，如何通知数据更改等等
@@ -409,6 +409,16 @@ ReactDOM.render(
 // 获取真实的DOM节点
 this.refs.xxx
 
+// 无状态函数获取DOM节点
+function TestComp(props){
+    let myDiv;
+    return (<div>
+        <div ref={(node) => myDiv = node}>
+            ...
+        </div>
+    </div>)
+}
+
 
 
 // 组件生命周期
@@ -733,7 +743,8 @@ reducer // 是一个匹配函数，action的发送是全局的：所有的reduce
 store  // store是一个Object,负责存储状态 
 state  // 当前的状态  Object类型
 Provider  // 作为顶层app的分发点，它只需要store属性就可以了。它会将state分发给所有被connect的组件
-connect   // 是真正的重点，它是一个科里化函数,先绑定数据,再绑定组件
+connect   //connect是一个科里化函数,用来连接React组件和Redux。
+// 传入对应的state和action等数据以及一个React组件，并返回一个新组件
 
 // connect([mapStateToProps], [mapDispatchToProps], [mergeProps], [options])(MyComponent)
 // 设置参数,绑定组件。connect 函数不会修改传入的 React 组件,而是返回一个新的组件
