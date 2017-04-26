@@ -1,3 +1,6 @@
+
+编程技术的水平，不在于语言，而在于思想。
+
 shift+右键打开命令行
 文件拖到cmd输入路径
 ctrl+shift + 上下
@@ -17,9 +20,140 @@ github 上的文件和本地冲突时, git pull 会合并到本地文件
 如果当前执行的是一个函数,函数里的变量就是活动对象
 
 //垃圾回收
+最常使用的方法叫做"引用计数"（reference counting）：语言引擎有一张"引用表"，保存了内存里面所有的资源
+的引用次数。如果一个值的引用次数是0，就表示这个值不再用到了，因此可以将这块内存释放。
+
 存在 引用 则不会回收
 将变量设置为null,切断对值的引用,让值脱离执行环境。垃圾回收器下次运行时,会自动删除这些值并释放内存
 
+// 内存泄露
+不再用到的内存，没有及时释放，就叫做内存泄漏（memory leak）
+
+
+// 浏览器
+浏览器的主要功能就是向服务器发出请求，在浏览器窗口中展示您选择的网络资源。这里所说的资源
+一般是指 HTML 文档，也可以是 PDF、图片或其他的类型。资源的位置由用户使用 URI（统一资源标示符）指定。
+
+// 显示规范
+浏览器解释并显示 HTML 文件的方式是在 HTML 和 CSS 规范中指定的。这些规范由网络标准化组织
+W3C（万维网联盟）进行维护。 多年以来，各浏览器都没有完全遵从这些规范，同时还在开发自己独
+有的扩展程序，这给网络开发人员带来了严重的兼容性问题。如今，大多数的浏览器都是或多或少地遵从规范。
+
+
+
+// 闭包
+闭包是 JavaScript 一个非常重要的特性，这意味着当前作用域总是能够访问外部作用域中的变量。
+因为 函数 是 JavaScript 中唯一拥有自身作用域的结构，因此闭包的创建依赖于函数。
+
+// 闭包的场景
+使用闭包可以在JavaScript中模拟块级作用域；
+闭包可以用于在对象中创建私有变量。
+
+
+
+
+// 前端模块化
+//好的模块是高度独立的,可以随时被移除或加入,而不损伤系统
+//1.可维护性。设计良好的模块与外面代码的依赖是很少的,可以独立更新和改进
+//2.减少全局污染。将模块封装在命名空间下
+//3.代码重用。我们可以在更新了代码之后,让引用了该模块的所有项目同步更新,还可以指定版本号,
+//  避免API变更带来的麻烦
+
+在ES6之前，前端模块的实现本质都是利用JS神器：闭包。 
+闭包使得函数在调用时可以访问该函数定义时的词法作用域，通过作用域查找所有声明的标识符（变量），
+达到不暴露私有作用域。
+
+
+
+
+
+  //扩展模块
+var module1 = (function (mod){
+　　　　mod.m3 = function () {
+　　　　　　//...
+　　　　};
+　　　　return mod;
+　　})(module1);
+
+//注入全部变量
+//module1模块需要使用jQuery库和YUI库，就把这两个库（其实是两个模块）当作参数输入module1。
+//这样做除了保证模块的独立性，还使得模块之间的依赖关系变得明显。
+var module1 = (function ($, YAHOO) {
+　　　　//...
+　　})(jQuery, YAHOO);
+
+//封装成一个对象
+//这样的写法会暴露所有模块成员，内部状态可以被外部改写。比如，外部代码可以直接改变内部计数器的值。
+var module1 = new Object({
+    _count : 0,
+    m1 : function (){
+　　　　　　  //...
+　　},
+　　m2 : function (){
+　　　　　　  //...
+　　}
+})
+
+//匿名函数立即执行,提供一个myModule对象作为接口,可以达到不暴露私有成员的目的。
+var myModule = (function(){
+    var grades = [12,55,95,93,48,63];
+    var average = function(){
+        var total = grades.reduce(function(prev,cur,index,self){
+                return prev+cur;
+        })
+        return  'the average is '+total/grades.length;
+    }
+
+    var failing = function(){
+        var failingGrades = grades.filter(function(item,index,self){
+                return item<60
+        })
+        return failingGrades.length + " person fails"
+    }
+    //默认所有属性和方法都是私有的,在return时选择性暴露对外接口
+    return {
+        average:average,
+        failing:failing
+    }
+})()
+console.log(myModule.average())
+console.log(myModule.failing())
+
+// webpack grunt gulp 
+怎么解释呢？因为 Gulp 和 browserify / webpack 不是一回事Gulp应该和Grunt比较，他们的区别我就不说了。
+说说用处吧。Gulp/Grunt 是一种工具，能够优化前端工作流程。比如自动刷新页面、合并、压缩css、js、编译less
+等等。简单来说，就是使用Gulp/Grunt，然后配置你需要的插件，就可以把以前需要手工做的事情让它帮你做了。
+说到 browserify / webpack ，那还要说到 seajs / requirejs 。这四个都是JS模块化的方案。
+其中seajs / require 是一种类型，browserify / webpack 是另一种类型。
+seajs / require : 是一种在线"编译" 模块的方案，相当于在页面上加载一个 CMD/AMD 解释器。
+这样浏览器就认识了 define、exports、module 这些东西。也就实现了模块化。
+browserify / webpack : 是一个预编译模块的方案，相比于上面 ，这个方案更加智能。
+没用过browserify，这里以webpack为例。首先，它是预编译的，不需要在浏览器中加载解释器。
+另外，你在本地直接写JS，不管是 AMD / CMD / ES6 风格的模块化，它都能认识，并且编译成浏览器认识的JS。
+这样就知道，Gulp是一个工具，而webpack等等是模块化方案。Gulp也可以配置seajs、requirejs甚至webpack的插件。
+
+// webpack的模块有什么特点
+可以兼容多模块风格，无痛迁移老项目。
+一切皆模块，js/css/图片/字体都是模块。
+静态解析，按需打包，动态加载。
+
+(function(modules) {
+    // Runtime
+})([
+    // 模块数组
+])
+模块不再暴露在全局作用域，模块的全局变量也不再是全局作用域。
+
+模块化是工程化的需求，是为了更好的管理代码假设我们用两个极端的方式去加载代码：
+// N个模块N个请求。
+// 所有模块打包成一个文件，一个请求。
+
+显然，这两种都不是最优方案，第一种请求数量过多，第二种请求文件过大。 
+理论上，最优方案是：按需打包，即将该页面需要的所有模块打包成一个文件，保证请求最少，且请求的代码都是需要的。
+
+在webpack之前的构建工具里，都实现不了这个“最优方案”，因为它们不知道模块之前的依赖关系，自然就不能按需打包了。
+
+而webpack出现之后，它的代码分片功能让webpack拥有了按需打包的特性，从而鹤立鸡群。当然，webpack还有很多其他优秀的特性。
 
 // JavaScript引擎的工作方式是，先解析代码，获取所有被声明的变量，然后再一行一行地运行
 // 申明提升,赋值无法提升
