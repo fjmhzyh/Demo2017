@@ -155,6 +155,36 @@ browserify / webpack : 是一个预编译模块的方案，相比于上面 ，�
 
 而webpack出现之后，它的代码分片功能让webpack拥有了按需打包的特性，从而鹤立鸡群。当然，webpack还有很多其他优秀的特性。
 
+
+// 前端自动化构建工具
+搭建web服务器
+文件热加载
+使用预处理器如Sass、LESS
+优化资源，比如压缩CSS、JavaScript、压缩图片
+
+// gulp 语法
+gulp.src(globs[, options]) // 返回一个流，但要注意这个流不是原始的文件流，而是一个虚拟文件对象流
+// globs  string/array
+
+gulp.task('mytask', ['array', 'of', 'task', 'names'], function() {
+  // 一个包含任务列表的数组，这些任务会在你当前任务运行之前完成。
+});
+
+gulp.watch(glob[, opts], tasks)  // 监视文件，并且可以在文件发生改动时候做一些事情。
+// 它总会返回一个 EventEmitter 来发射（emit） 
+
+var watcher = gulp.watch('js/**/*.js', ['uglify','reload']);
+watcher.on('change', function(event) {
+  console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
+});
+
+
+// gulp 插件
+npm install gulp-uglify gulp-minify-css gulp-minify-html  gulp-jshint gulp-concat gulp-less gulp-imagemin imagemin-pngquant gulp-livereload gulp-webserver gulp-autoprefixer--save-dev
+// babel
+npm install --save-dev gulp-babel babel-preset-es2015 babel-plugin-transform-runtime
+
+
 // JavaScript引擎的工作方式是，先解析代码，获取所有被声明的变量，然后再一行一行地运行
 // 申明提升,赋值无法提升
 console.log(a);   // undefined  说明变量a已经申明,但没有赋值
