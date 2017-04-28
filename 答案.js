@@ -185,6 +185,23 @@ npm install gulp-uglify gulp-minify-css gulp-minify-html  gulp-jshint gulp-conca
 npm install --save-dev gulp-babel babel-preset-es2015 babel-plugin-transform-runtime
 
 
+// sql  structured query language 结构化查询语言
+// 数据类型
+float dobule decimal(18,2) // 长度,精度   普通的用double就行
+// 时间  如果就是一般的时间字段，没有什么精度长度限制的就datetime吧。
+// bigint用在特殊场景，比如精度要求很高，或者时间长度超长。
+
+//  字符串
+char(100)      // 固定长度100
+varchar(100)   // 最长100,根据实际变化
+
+// ENUM 枚举类型
+ENMU(a,b,c)   // 加上not null 默认值为第一个值。每个值都有一个编号，数据库存储的是编号而不是值
+
+// set 类型   选取列表中多个值
+set(a,b,c)
+
+
 // JavaScript引擎的工作方式是，先解析代码，获取所有被声明的变量，然后再一行一行地运行
 // 申明提升,赋值无法提升
 console.log(a);   // undefined  说明变量a已经申明,但没有赋值
@@ -1274,6 +1291,59 @@ Array.protoype.push()     // 返回数组的长度
 Array.protoype.pop()      // 从一个数组中删除最后一个元素，并将该值返回给调用者。
 Array.prototype.shift()   // 从数组中删除第一个元素，并返回该元素的值
 Array.prototype.unshift() // 返回数组的长度
+// 数组的排序
+Array.prototype.reverse()  
+Array.prototype.sort()    // 返回数组  默认排序顺序是根据字符串Unicode码点。
+
+// sort方法会对数组的每一项调用toString方法,对字符串进行比较
+var a = [1,3,4,5,7];   
+function compareNumbers(a, b) {
+  return a - b;
+}
+a.sort(compareNumbers)   // 当数组为数值类型时，可以使用这个方法比较
+
+// 升序排列的方法
+function compare(a, b) {
+  if (a is less than b by some ordering criterion) {
+    return -1;
+  }
+  if (a is greater than b by the ordering criterion) {
+    return 1;
+  }
+  // a must be equal to b
+  return 0;
+}
+
+// 随机排序的方法
+function randomSort(){ 
+    return 0.5 - Math.random()
+}
+
+// Math.random() 不包含1
+
+
+// 数组属性比较排序
+var items = [
+  { name: 'Edward', value: 21 },
+  { name: 'Sharpe', value: 37 },
+  { name: 'And', value: 45 },
+  { name: 'The', value: -12 },
+  { name: 'Magnetic' },
+  { name: 'Zeros', value: 37 }
+];
+
+items.sort(function (a, b) {
+  if (a.value > b.value) {
+    return 1;
+  }
+  if (a.value < b.value) {
+    return -1;
+  }
+  // a 必须等于 b
+  return 0;
+});
+
+
 
 // 返回新数组,浅拷贝
 Array.prototype.slice()   // 截取数组的一部分浅拷贝到一个新数组对象，并返回。
