@@ -4,6 +4,9 @@
 shift+右键打开命令行
 文件拖到cmd输入路径
 ctrl+shift + 上下
+PWD Print Working Directory  // 打印当前工作目录
+
+ctrl+d 选中相同的
 
 // git
 github 上有5个文件,本地有3个文件,git push后本地覆盖了github
@@ -1373,5 +1376,14 @@ var b = JSON.parse(s);
 var a = {id: 0, text: "111", completed: false}
 var b ={...a,completed:true}
 
+Array.prototype.filter()   // 返回一个新数组
+Array.prototype.forEach()  // 返回值 undeinfed   对数组的每个元素执行一次提供的函数。
+Array.prototype.map()      // 返回一个新数组
 
 */
+
+
+var a = [];
+var c =a.map(function (item) {
+    return item+1
+})

@@ -119,6 +119,22 @@ class MyComponent extends React.Component {
   }
 }
 
+// 无状态组件  无状态函数是没有state的 只有props
+//  props是不可变的。props一定来自于默认属性或父组件
+// 没有state也就不能更新。只能通过父组件进行重新渲染
+function NumberList(props) {
+  const numbers = props.numbers;
+  const listItems = numbers.map((number) =>
+    <li key={number.toString()}>
+      {number}
+    </li>
+  );
+  return (
+    <ul>{listItems}</ul>
+  );
+}
+
+
 props                // 父子组件通信 
 回调函数 和 事件机制            //子组件向父组件通信  
 getChildContext()    //跨组件通信   
@@ -155,6 +171,7 @@ suffix     // 后缀
 state只关心每个组件自己内部的状态,这些状态只能在组件内部改变。
 setState()  // setState() 是一个异步方法,一个生命周期内的setState()方法会合并操作
 // setState通过一个队列机制更新。当执行setState时,会将需要更新的state合并后放入状态队列,而不是立即更新
+setstate没有重新渲染,可能是shouldComponentUpdate里面返回了false
 this.state.value = 1 //千万不要这样写。这是一种低效的做法,而且很有可能被之后的操作替换。
 // 这种做法不会将state放入状态队列,当下次调用setState时,将忽略之前的修改,而造成无法预知的错误
 
@@ -165,6 +182,7 @@ this.state.value = 1 //千万不要这样写。这是一种低效的做法,而�
 // virtual dom 在内存中以对象的形式存在
 // syntheticEvent 合成事件可以给 virtual dom 添加事件,同样支持冒泡,所有的事件都自动绑定到最外层
 // 尽量不要混用 合成事件 和 原生事件
+// 在react中使用DOM原生事件，一定要在组件卸载时手动移除,否则很可能出现内存泄露
 class Demo extends Component {
   componentDidMount() {
     this.refs.button.addEventListener('click',() =>{
@@ -181,6 +199,15 @@ class Demo extends Component {
   } 
 }
 
+//大小
+vue 20k 
+react 44k
+angular 56k
+
+
+数据驱动DOM的变化，DOM是数据的一种自然映射。
+VUE 不需要手动操作DOM，通过directive驱动DOM变化。并通过Listeners监听DOM，完成数据的双休绑定
+
 
 // 前端架构
 MVC // 一个view对应一个model,model的任何改变会应用到view中，view的操作通过controller应用到model中
@@ -188,6 +215,8 @@ MVC // 一个view对应一个model,model的任何改变会应用到view中，vie
 // 问题：项目越大，逻辑越复杂，view和model越来越多。
 MVVM 
 // ViewModel取代了Controller。关键是 数据绑定 view的数据状态发生可以直接影响VM，反之亦然
+// view 和 model 无法直接通讯，需要通过ViewModel。ViewModel是观察者
+// 可以对数据做持久化，不需要刷新页面，不需要重新加载很多资源。
 Flux  
 // Flux不是库,也不是框架,而是一种架构思想。其核心是单向数据流。
 // 在flux中,数据从action 到dispatcher,再到store,再到view的路线是不可逆的 
@@ -207,6 +236,8 @@ Redux
 // 每一个reducer都是一个纯函数。同样的输入得到同样的输出。使状态的修改变得简单，可测试。
 
 
+// 受控组件 和 非受控组件
+// 最大区别：非受控组件的状态并不会受到应用状态的控制。受控组件的值则来源于组件的state
 
 
 
@@ -709,6 +740,7 @@ componentDidMount() {
 }
 
 componentWillUnmount() {
+    // 页面跳转，render时组件会被销毁
     // 组件卸载时,我们常常执行一些清理方法,如事件回收或是清楚定时器 
 }
 
@@ -728,6 +760,7 @@ componentWillUpdate(nextProps, nextState) {
 componentDidUpdate(prevProps, prevState) {
   
 }
+
 
 // redux
 // react 的 缺陷
@@ -752,10 +785,30 @@ mapStateToProps(state, [ownProps])
 // 函数,返回一个对象。store更新时,将被调用.
 // If you don't want to subscribe to store updates, pass null or undefined in place of mapStateToProps
 // ownProps 可选 如果有 将被当做参数传入组件
+
+
+
 ownProps 是指组件自身的props
 mapDispatchToProps(dispatch, [ownProps])
 // 函数/对象 If an object is passed, each function inside it is assumed to be a Redux action creator. 
 // If a function is passed, it will be given dispatch
+
+作为函数时，拥有两个参数，第一个参数dispatch用来发送action
+第二个参数  ownProps  用来拿到 组件自身的props。有时候需要在发送action时用到
+
+// 总结
+当action需要使用ownProps的数据时，写成函数的形式
+当action需要在组件里面传入参数时，写成对象的形式更方便
+
+
+bindActionCreators   // 在使用import * from action的时候，将多个action作为一个对象传入。
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        userInfoActions: bindActionCreators(userInfoActions, dispatch),
+    }
+}
+
+
 mergeProps(stateProps, dispatchProps, ownProps)
 // 函数 
 // If you omit it, Object.assign({}, ownProps, stateProps, dispatchProps) is used by default.
@@ -765,3 +818,53 @@ options
 combineReducers(reducers)
 // 随着应用变得复杂，需要对 reducer 函数 进行拆分，拆分后的每一块独立负责管理 state 的一部分。
 // 返回一个 function。 最终生成一个state对象,每个reducer是state的一个属性
+
+
+
+// 10几毫秒可以忽略
+// 性能优化  react-addons-perf   npm i react-addons-perf --save
+import Perf from 'react-addons-perf' 
+if (__DEV__) {   // 如果是在开发环境下
+  window.Perf = Perf
+}
+// 运行程序。在操作之前先运行Perf.start()开始检测，然后进行若干操作，运行Perf.stop停止检测。
+// 然后再运行Perf.printWasted()即可打印出浪费性能的组件列表。
+
+// PureRenderMixin 优化   npm i react-addons-pure-render-mixin --save
+import React from 'react' 
+import PureRenderMixin from 'react-addons-pure-render-mixin' 
+class List extends React.Component {
+ constructor(props, context) { 
+  super(props, context); 
+  this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this); 
+  } 
+}
+// 这里的意思是重写组件的shouldComponentUpdate函数，在每次更新之前判断props和state。
+// 如果有变化则返回true，无变化则返回false。
+
+// Immutable.js 优化
+React 的终极优化是使用 Immutable.js 来处理数据，Immutable 实现了 js 中不可变数据的概念。
+当我们组件的props和state中的数据结构层次不深（如普通的数组、对象等）的时候，就没必要用它。
+但是当数据结构层次很深（例如obj.x.y.a.b = 10这种），你就得考虑使用了。
+之所以不轻易使用是，Immutable 定义了一种新的操作数据的语法，如下。
+和我们平时操作 js 数据完全不一样，而且每个地方都得这么用，学习成本高、易遗漏，风险很高。
+    var map1 = Immutable.Map({a:1, b:2, c:3});
+    var map2 = map1.set('b', 50);
+    map1.get('b'); // 2
+    map2.get('b'); // 50
+因此，这里建议优化还是要从设计着手，尽量把数据结构设计的扁平一些。
+这样既有助于优化系统性能，又减少了开发复杂度和开发成本。
+
+
+
+
+
+
+
+
+
+
+// 思考
+如何处理用户登录登出
+
+如何处理一些共享的状态和信息。比如头像，点赞等等
