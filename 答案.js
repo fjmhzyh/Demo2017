@@ -1,6 +1,10 @@
 
 编程技术的水平，不在于语言，而在于思想。
 
+1/3 = 0.3333...
+3 * 1/3 = 3*0.3333...
+1 = 0.9999...
+
 shift+右键打开命令行
 文件拖到cmd输入路径
 ctrl+shift + 上下
@@ -254,6 +258,7 @@ document.removeEventListener('mousedown',function(){console.log(88)} )
 document.addEventListener('mousedown',b1.say)
 document.removeEventListener('mousedown',b1.say)
 
+Object是一个构造函数
 Object是Function的实例,所以可以直接调用方法   Obejcet.assign(a,b)
 
 
@@ -434,7 +439,7 @@ localStorage    //没有时间限制的数据存储
 
 // 1.获取html标签名
 //<div id='myelement'></div>
-var e=document.getElementById('myelement')
+var e = document.getElementById('myelement')
 e.tagName==e.nodeName  //'DIV'
 
 // 2.判断是否是某个html标签
@@ -672,6 +677,9 @@ String.prototype.match()  // 返回一个空数组
 // cat|dog表示匹配”cat”或者”dog”
 // red|blue|以及red||blue以及|red|blue都表示匹配red或者blue或者一个空字符串
 
+var t ='cat123'
+var r = new RegExp(/cat|dog/g)
+t.match(r)
 
 //  ^表示匹配行的开始位置
 //  $表示匹配行的结束位置
@@ -972,7 +980,7 @@ a.prototype.get = function(){
 
 
 
-// Object.create()
+// Object.create(__proto__,{})  // 第一个参数是原型对象,第二个参数是可选参数
 var o;
 
 // 创建一个原型为null的空对象
@@ -1009,8 +1017,6 @@ var rect = new Rectangle();
 var o1 = { a: 1 };var o2 = { b: 2 };var o3 = { c: 3 };
 var obj = Object.assign(o1, o2, o3);   // 合并3个对象,返回target对象
 // 属性名冲突时,用source的属性替换target的属性
-
-
 
 
 
@@ -1160,6 +1166,20 @@ s.staticMethod()  // s.staticMethod is not a function
 
 
 
+
+// import 和 export 总结
+
+// 可以export很多个具名方法,import的时候必须加括号，并且名字必须一样
+// export default 可以导出 匿名函数 , import的时候不用加括号，并且名字随意
+// export 和export default 可以混用
+// import * as sth  可以把模块当成一个对象加载进来，通过 sth.xxx调用
+
+
+
+
+
+
+
 // import 和 export
 // 这种加载称为“编译时加载”或者静态加载，即 ES6 可以在编译时就完成模块加载，
 // 效率要比 CommonJS 模块的加载方式高。当然，这也导致了没法引用 ES6 模块本身，因为它不是对象。
@@ -1172,6 +1192,7 @@ import {myMethod} from 'util';  // 模块 必须配置该模块的位置
 import { stat, exists, readFile } from 'fs';   //加载 fs 的三个属性
 
 // 由于import是静态执行，所以不能使用表达式和变量，以及if语句，这些只有在运行时才能得到结果的语法结构。
+
 // 报错
 import { 'f' + 'oo' } from 'my_module';   // 表达式
 
@@ -1199,36 +1220,11 @@ var year = 1958;
 
 export {firstName, lastName, year}; //优先选择这种,在export后面加个大括号,放入要导出的变量
 
-var a=1
-export {a}      // 两者等价
-export var a=1  // 两者等价
-
 
 export function multiply(x, y) {
   return x * y;
 };
 
-// 报错
-export 1;
-
-// 报错
-var m = 1;
-export m;
-
-// 上面两种写法都会报错，因为没有提供对外的接口。第一种写法直接输出1，
-// 第二种写法通过变量m，还是直接输出1。1只是一个值，不是接口。正确的写法是下面这样。
-
-// 正确写法
-// 写法一
-export var m = 1;
-
-// 写法二
-var m = 1;
-export {m};
-
-// 写法三
-var n = 1;
-export {n as m};
 
 // export default   导入时可以用任意名字
 // export default就是输出一个叫做default的变量或方法，然后系统允许你为它取任意名字。
@@ -1245,16 +1241,6 @@ customName(); // 'foo'
 export function add(){}
 export function minus(argument) {}
 
-var a = 1;
-var b = 2;
-var c = function(){
-    console.log('c')
-}
-export {a,b,c}
-import {a,b,c} from './component/hello';
-import * as hello from './component/hello';
-hello.a 
-hello.c()
 
 
 
@@ -1380,10 +1366,30 @@ Array.prototype.filter()   // 返回一个新数组
 Array.prototype.forEach()  // 返回值 undeinfed   对数组的每个元素执行一次提供的函数。
 Array.prototype.map()      // 返回一个新数组
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 */
 
-
-var a = [];
-var c =a.map(function (item) {
-    return item+1
-})

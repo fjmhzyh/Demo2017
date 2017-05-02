@@ -454,10 +454,10 @@ select 字段 from 表名|视图  [where表达式] [group by 字段 [having表�
 select id as user_id,name as user_name from users;
 
 // in 
-select * from students where age in [16,20];    // 查找16或20的数据
+select * from students where age in (16,20);    // 查找16或20的数据
 
 // between and    not between and
-select * from students where name not in ['Ann','Leo'];  // 查找不是Ann或Leo的数据
+select * from students where name not in ('Ann','Leo');  // 查找不是Ann或Leo的数据
 select * from students where age between 16 and 20;    // 查找16-20的数据   
 
 

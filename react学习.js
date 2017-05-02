@@ -51,7 +51,8 @@ Data Flow   // '单向数据绑定' 是 React 推崇的一种应用架构的方�
 
 
 JSX 的基本语法规则：遇到 HTML 标签（以 < 开头），就用 HTML 规则解析；
-遇到代码块（以 { 开头），就用 JavaScript 规则解析。
+遇到代码块以 { 开头，就用 JavaScript 规则解析。
+JSX 将 { } 中的内容渲染为动态内容
 ReactDOM.render(
   <div>
   {
@@ -63,21 +64,30 @@ ReactDOM.render(
   document.getElementById('example')
 );
 
-JSX 将 { } 中的内容渲染为动态内容
-
-// 属性的设置
-<div id={this.state.id}></div>   变量 /
-<div id={ this.getId() }></div>   函数 /
-<div className={ this.state.isCompleted ? 'completed' : ''}></div>   三目运算  /
-<div className={ if(this.state.isCompleted){'completed'} }></div>   判断  /
 
 // 非DOM属性
 key // key是可选的唯一标示符,可以提高渲染效率。当key相同时,只渲染第一个key,且发出警告
 ref // 父组件对子组件保持引用
 
+// 属性的设置
+<div id={this.state.id}></div>   // 变量 
+<div id={ this.getId() }></div>  // 函数 
+<div className={ this.state.isCompleted ? 'completed' : ''}></div>  // 三目运算  
+<div className={ if(this.state.isCompleted){'completed'} }></div>   // 判断 
+
 // 特殊属性,保留关键字
 for htmlFor
 class className
+
+// 小写字母对应DOM元素,大写字母对应组件元素
+// 命名空间,解决组件名冲突
+<Nav.Button  ufo='xxx' ></Nav.Button>  //  自定义标签中可以自定义属性
+<Nav.Button  data-ufo='xxx' ></Nav.Button>  // 这个也可以
+<Nav.Button  aria-ufo='xxx' ></Nav.Button>  // 网络无障碍属性也可以
+
+// 在JSX中往DOM元素传自定义属性,无法被React解析
+<div ufo='xxx'></div>  // 报错
+<div data-ufo='xxx' ></div>  // 这个可以
 
 // style
 var style = { color:'red';fontSize:'12px'}
@@ -93,16 +103,6 @@ var ul = React.DOM.ul(null,li,li,li,li) // 可以写多个子元素,但不接受
 
 ReactDOM.render(component/html,document.getElementById('example'));
 
-
-// 小写字母对应DOM元素,大写字母对应组件元素
-// 命名空间,解决组件名冲突
-<Nav.Button  ufo='xxx' ></Nav.Button>  //  自定义标签中可以自定义属性
-<Nav.Button  data-ufo='xxx' ></Nav.Button>  // 这个也可以
-<Nav.Button  aria-ufo='xxx' ></Nav.Button>  // 网络无障碍属性也可以
-
-// 在JSX中往DOM元素传自定义属性,无法被React解析
-<div ufo='xxx'></div>  // 报错
-<div data-ufo='xxx' ></div>  // 这个可以
 
 // ES5 组件
 var MyComponent = React.createClass({
@@ -120,7 +120,7 @@ class MyComponent extends React.Component {
 }
 
 // 无状态组件  无状态函数是没有state的 只有props
-//  props是不可变的。props一定来自于默认属性或父组件
+// props是不可变的。props一定来自于默认属性或父组件
 // 没有state也就不能更新。只能通过父组件进行重新渲染
 function NumberList(props) {
   const numbers = props.numbers;
@@ -165,6 +165,7 @@ immutable  // 不可改变的
 mutable    // 易变的
 add ons    // 附件 插件 扩展 
 suffix     // 后缀
+prefix     // 前缀
 
 
 // state
@@ -322,12 +323,6 @@ componentDidMount() {
  不要在 render 或者 render 之前访问 refs
 
 
-// 更新表单 onChange事件  
-// this.state
-getInitialState: function() {
-	return {liked: false};
-}
-
 // 组件生命周期
 componentWillMount()
 componentDidMount()    // 在这里请求数据,成功后setState刷新UI
@@ -349,15 +344,6 @@ componentWillReceiveProps()  //将要收到props,第一次render时不会触发
 
 参数传递
 return <p onClick={this.handleClick.bind(this, 'extra param')} />;
-
-Mixin 
-// 虽然组件的原则就是模块化，彼此之间相互独立，
-// 但是有时候不同的组件之间可能会共用一些功能，共享一部分代码。
-// 所以 React 提供了 mixins 这种方式来处理这种问题。
-var TickTock = React.createClass({
-    mixins: [SetIntervalMixin], // Use the mixin
-})
-
 
 
 
@@ -452,36 +438,6 @@ function TestComp(props){
 
 
 
-// 组件生命周期
-componentWillMount()
-componentDidMount()    // 在这里请求数据,成功后setState刷新UI
-componentWillUpdate(object nextProps, object nextState)
-componentDidUpdate(object prevProps, object prevState)
-componentWillUnmount()
-shouldComponentUpdate()   // return boolean 确定是否要更新
-
-
-
-// redux
-
-// rducer
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -519,6 +475,11 @@ var tom = (function(){
 //而 History API 需要服务端支持，这样服务端能获取请求细节。
 
 //还有一个原因是因为有些应该会忽略 URL 中的 hash 部分，记得之前将 URL 使用微信分享时会丢失 hash 部分。
+
+history.pushState(stateObj, " ", "bar.html");   
+// 第一个参数是状态对象
+// 第二个参数是title,现在不稳定，填空就好
+// 第三个参数是url
 
 
 
@@ -737,11 +698,12 @@ componentWillMount() {
 
 componentDidMount() {
     // 在这里调用setSate 组件会再次更新state,组件将渲染两次,这并不是什么好事。
+    // 但是有时候必须在这里setState，比如需要获取屏幕宽高等动态值
 }
 
 componentWillUnmount() {
     // 页面跳转，render时组件会被销毁
-    // 组件卸载时,我们常常执行一些清理方法,如事件回收或是清楚定时器 
+    // 组件卸载时,我们常常执行一些清理方法,如事件回收或是清除定时器 
 }
 
 componentWillReceiveProps(nextProps) {
@@ -750,11 +712,11 @@ componentWillReceiveProps(nextProps) {
 }
 
 shouldComponentUpdate(nextProps, nextState) {
-    // 不用在这里setState,否则无限循环
+    // 不要在这里setState,否则无限循环
 }
 
 componentWillUpdate(nextProps, nextState) {
-    // 不用在这里setState,否则无限循环
+    // 不要在这里setState,否则无限循环
 }
 
 componentDidUpdate(prevProps, prevState) {
