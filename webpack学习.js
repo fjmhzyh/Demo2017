@@ -1,10 +1,44 @@
 // webpack.config.js
 
+
 // 常用包
 npm install --save-dev autoprefixer postcss-loader html-webpack-plugin extract-text-webpack-plugin
 var path = require('path');
 
+// 概念
+// loader
+Webpack 本身只能处理 JavaScript 模块，如果要处理其他类型的文件，就需要使用 loader 进行转换。
+Loader 可以理解为是模块和资源的转换器，它本身是一个函数，接受源文件作为参数，返回转换的结果。
+这样，我们就可以通过 require 来加载任何类型的模块或文件，比如 CoffeeScript、 JSX、 LESS 或图片。
+
+
+// 打包
+webpack entry bundle.js
+
+// webpack.config.js
+webpack 的 配置文件。如果存在，只要输入 webpack 就可以打包  
+webpack --progress --colors --watch   // 监听文件变化,但不会刷新页面
+
+
+// webpack-dev-server
+它将在 localhost:8080 启动一个 express 静态资源 web 服务器，并且会以监听模式自动运行 webpack
+通过一个 socket.io 服务实时监听它们的变化并自动刷新页面。
+使用服务器后，文件不在打包到硬盘，而是打包到内存当中
+webpack-dev-server --progress --colors
+
+
+// resolve
+Webpack 的配置提供了 resolve 和 resolveLoader 参数来设置模块解析的处理细节
+resolve 用来配置应用层的模块（要被打包的模块）解析，resolveLoader 用来配置 loader 模块的解析。
+
+// amd / cmd
+在 webpack 中，模块名只有局部作用域，在 Require.js 中模块名是全局作用域，可以在全局引用。
+定义一个没有 id 值的匿名模块，通常作为应用的启动函数：
+
+
+
 module.exports = {
+  devtool:'cheap-module-eval-source-map',  // 生成源码映射，方便调试。这个模式构建速度适中，调试方便
   entry: {
     app:path.resolve(__dirname, 'src/app.js'),
   },
@@ -171,6 +205,9 @@ new webpack.optimize.UglifyJsPlugin({
 // ProvidePlugin 引用第三方库
 
 
+// new webpack.optimize.OccurrenceOrderPlugin()  给经常使用的模块分配最小长度的ID
+
+// new webpack.optimize.DedupePlugin()   防止重复打包
 
 // 生成Hash名称的script来防止缓存
 output: {

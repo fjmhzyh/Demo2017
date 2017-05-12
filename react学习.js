@@ -2,19 +2,35 @@
 // 生成package.json  webpack.config.js
 npm install react react-dom --save     
 npm install express babel-core babel-polyfill babel-loader babel-preset-es2015 babel-preset-react babel-preset-stage-0 babel-preset-react-hmre webpack webpack-dev-middleware webpack-hot-middleware --save-dev
-// 安装 react-router 和 redux
+
 // npm install prop-types --save     import PropTypes from 'prop-types';
+// npm install css-loader style-loader sass-loader react-hot-loader --save-dev
+// 安装 react-router 和 redux
+// npm install react-router-dom --save     npm install --save redux
+// npm install whatwg-fetch --save
+
 // 配置webpack.config.js  entry output module
 // webpack --progress --colors --watch  带有进度和颜色,自动监听
-// npm install css-loader style-loader --save-dev
-// npm install react-router-dom --save
-// npm install whatwg-fetch --save
 
 // .babelrc
 {
   "presets": ["es2015","react","stage-0"],    // 转码规则
   "plugins": []
 }
+
+
+// webpack2 配置
+npm install --save-dev webpack webpack-dev-server  //安装webpack
+npm install --save react react-dom react-hot-loader@next   //安装react
+npm install react-router-dom --save    // 安装react router
+npm install --save redux   // 安装redux
+// 安装 babel
+npm install babel-core babel-polyfill babel-loader babel-preset-es2015 babel-preset-react --save-dev
+// 安装loader
+npm install css-loader style-loader sass-loader --save-dev
+// 安装fetch
+npm install whatwg-fetch --save   
+
 
 
 前端开发中,性能消耗最大的就是DOM操作
@@ -48,6 +64,30 @@ Data Flow   // '单向数据绑定' 是 React 推崇的一种应用架构的方�
 //只有当它插入文档以后，才会变成真实的 DOM 。根据 React 的设计，所有的 DOM 变动，
 //都先在虚拟 DOM 上发生，然后再将实际发生变动的部分，反映在真实 DOM上，这种算法叫做 DOM diff 。
 //它可以极大提高网页的性能表现。
+
+
+// 用JSON对象描述html元素
+<button class='btn btn-blue'><em>confirm</em></button>
+
+{
+  type:'button',
+  props:{
+    className:'btn btn-blue',
+    children:{
+      type:'em',
+      props:{
+        children:'confirm'
+      }
+    }
+  }
+}
+
+// JSX将 html语法直接加入到js中，再通过翻译器转换到纯JS后由浏览器运行。
+// 尽管JSX是第三方标准，但这套标准适用于任何一个框架
+
+
+
+
 
 
 JSX 的基本语法规则：遇到 HTML 标签（以 < 开头），就用 HTML 规则解析；
@@ -743,11 +783,11 @@ connect   //connect是一个科里化函数,用来连接React组件和Redux。
 
 // connect([mapStateToProps], [mapDispatchToProps], [mergeProps], [options])(MyComponent)
 // 设置参数,绑定组件。connect 函数不会修改传入的 React 组件,而是返回一个新的组件
-mapStateToProps(state, [ownProps]) 
+mapStateToProps(state, [ownProps])  
 // 函数,返回一个对象。store更新时,将被调用.
 // If you don't want to subscribe to store updates, pass null or undefined in place of mapStateToProps
 // ownProps 可选 如果有 将被当做参数传入组件
-
+可以在这里打印当前的state
 
 
 ownProps 是指组件自身的props
@@ -819,10 +859,44 @@ React 的终极优化是使用 Immutable.js 来处理数据，Immutable 实现�
 
 
 
+// redux 源码
+import createStore from './createStore'
+import combineReducers from './combineReducers'
+import bindActionCreators from './bindActionCreators'
+import applyMiddleware from './applyMiddleware'
+import compose from './compose'
+import warning from './utils/warning'
+function isCrushed() {}
+
+if (
+  process.env.NODE_ENV !== 'production' &&
+  typeof isCrushed.name === 'string' &&
+  isCrushed.name !== 'isCrushed'
+) {
+  warning(
+    'You are currently using minified code outside of NODE_ENV === \'production\'. ' +
+    'This means that you are running a slower development build of Redux. ' +
+    'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' +
+    'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' +
+    'to ensure you have the correct code for your production build.'
+  )
+}
+
+export {
+  createStore,
+  combineReducers,
+  bindActionCreators,
+  applyMiddleware,
+  compose
+}
 
 
+// react-redux 源码
+import Provider from './components/Provider'
+import connectAdvanced from './components/connectAdvanced'
+import connect from './connect/connect'
 
-
+export { Provider, connectAdvanced, connect }
 
 
 
@@ -830,3 +904,14 @@ React 的终极优化是使用 Immutable.js 来处理数据，Immutable 实现�
 如何处理用户登录登出
 
 如何处理一些共享的状态和信息。比如头像，点赞等等
+
+var $$observable = 'say'
+o = {
+  age:1,
+  add() {
+    this.age+1
+  },
+  [$$observable]() {
+    console.log('hi,java')
+  }
+}
