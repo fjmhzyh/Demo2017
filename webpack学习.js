@@ -36,6 +36,26 @@ resolve 用来配置应用层的模块（要被打包的模块）解析，resolv
 定义一个没有 id 值的匿名模块，通常作为应用的启动函数：
 
 
+// webpack1 webpack2
+在 1 当中 必须 加载 babel 才能 使用import语法。在 2 当中 可以直接使用import
+
+
+// path.resolve   path.join   path.relative(from, to)
+path.resolve([...paths])  // 把一个路径或路径片段的序列解析为一个绝对路径。
+// 给定的路径的序列是从右往左被处理的，后面每个 path 被依次解析，直到构造完成一个绝对路径。
+path.resolve('/foo', '/bar', 'baz')  // /bar/baz      /bar 是绝对路径，返回
+
+// 如果处理完全部给定的 path 片段后还未生成一个绝对路径，则当前工作目录会被用上。
+
+path.resolve('./baz','./bar')  // 这里都是相对路径,所以返回了当前工作目录
+// C:\\Users\\115A\\Desktop\\webpack学习\\web1\\baz\\bar'
+
+path.relative(from, to)  // 返回一个相对路径
+
+path.join([...paths])  // 使用平台特定的分隔符把全部给定的 path 片段连接到一起，并规范化生成的路径。
+
+
+
 
 module.exports = {
   devtool:'cheap-module-eval-source-map',  // 生成源码映射，方便调试。这个模式构建速度适中，调试方便
@@ -43,18 +63,16 @@ module.exports = {
     app:path.resolve(__dirname, 'src/app.js'),
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist'),   // 打包后的文件存放的地方
     publicPath:'/',   // 静态资源的绝对路径
-    filename: '[name].js'   // name对应entry的key，也就是app
+    filename: '[name].js'   // name对应entry的key，也就是app   // 打包后的文件名
   },
   resolve: {
     extensions: ['', '.js', '.vue', '.json'],    // 文件后缀名补全
     fallback: [path.join(__dirname, '../node_modules')],   //找不到模块时，去fallback指定的路径找
     alias: {                                               // alias路径别名
-      'vue$': 'vue/dist/vue.common.js',
-      'src': path.resolve(__dirname, '../src'),
-      'assets': path.resolve(__dirname, '../src/assets'),
-      'components': path.resolve(__dirname, '../src/components')
+      'vue$': 'vue/dist/vue.common.js',                  // $表示精确匹配
+      'components': path.resolve(__dirname, '../src/components')   // 如果配置了alias，必须重新启动一下
     }
   },
   resolveLoader: {
@@ -102,6 +120,13 @@ module.exports = {
   postcss: [
       require('autoprefixer') //调用autoprefixer插件，例如 display: flex
   ],
+  devServer: {
+    contentBase: "./public",//本地服务器所加载的页面所在的目录
+    colors: true,//终端中输出结果为彩色
+    historyApiFallback: true,//不跳转
+    inline: true//实时刷新
+    port:8080  // 默认8080
+  } 
 };
 
 //resolve模块

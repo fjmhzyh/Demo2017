@@ -37,11 +37,19 @@ fs.createReadStream(__filename)  // 读取当前文件
 assert.equal(count,1)  //比较是否相等
 
 
-// 全局对象 能被用在所有的模块中
-process  // 用来与操作系统通信
-Buffer   // 对二进制数据的支持
-module   // 仅仅存在于当前模块
-
+// nodejs中的 全局对象 能被用在所有的模块中
+process      // 用来与操作系统通信
+Buffer       // 对二进制数据的支持
+module       // 仅仅存在于当前模块
+__dirname    // 当前文件路径
+__filename   // 当前文件名
+console      // 输出
+require()    // 模块加载
+exports      // 模块导出
+setImmediate(callback[, ...args])
+clearImmediate(immediateObject)
+setInterval(callback, delay[, ...args])
+clearInterval(intervalObject)
 
 // npm 
 npm search express  // 搜索模块 可以使用正则
@@ -97,6 +105,22 @@ commander  optimist
 
 // 退出程序,指定退出码
 process.exit(1)  // node默认返回0的退出状态,非0的状态被认为是一个错误
+
+
+process.cwd()  // current working directory  当前工作目录   linux中的pwd Print Working Directory
+
+process.env  // 返回一个包含用户环境的 对象
+
+// 设置process.env 的值 将 隐式的被转换成 字符串 类型
+
+
+// cmd中的用户环境变量
+set   // 查看所有环境变量
+set port=1000   // 不要有空格 
+
+// Linux中的用户环境变量
+export   // 查看所有环境变量
+echo port=1000     // 设置环境变量
 
 
 //  this 指向
@@ -470,4 +494,31 @@ EventEmitter.removeListener(event, listener)
 //npm 提供了一个有趣的命令 npm link， 它的功能是在本地包和全局包之间创建符号链
 //接。我们说过使用全局模式安装的包不能直接通过 require 使用，但通过 npm link 命令
 //可以打破这一限制。
+
+
+
+
+
+
+
+
+// cmd的一些命令
+
+// cmd中的用户环境变量
+set   // 查看所有环境变量
+set port=1000   // 不要有空格 
+
+// Linux中的用户环境变量
+export   // 查看所有环境变量
+echo port=1000     // 设置环境变量
+
+// ping   用来检测网络是否通畅  向对方发送一个数据包，看对方是否返回一个同样大小的数据包
+-t  // 不间断的发送数据
+-l  // 发送数据包的大小，默认32KB
+-n  // 发送的次数
+-4  // 强制使用 IPv4。
+-6  // 强制使用 IPv6。
+
+ping 127.0.0.7 -n 2
+
 

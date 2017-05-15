@@ -448,6 +448,8 @@ if(e.tagName.toLowerCase() =='div'){      //一定要toLowerCase()
     //do sth. here
 }
 
+// innerText 与样式有关, 无法返回hidden的元素, textContent可以返回hidden的元素
+
 //获取style里面的css
 e.style对象
 e.style.width
