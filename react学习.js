@@ -159,7 +159,8 @@ class MyComponent extends React.Component {
   }
 }
 
-// 无状态组件  无状态函数是没有state的 只有props
+// 无状态组件  无状态函数是没有state的 只有props,也没有生命周期函数
+// 无状态组件始终保持一个实例，避免了不必要的检查和内存分配，做到了内部优化
 // props是不可变的。props一定来自于默认属性或父组件
 // 没有state也就不能更新。只能通过父组件进行重新渲染
 function NumberList(props) {
