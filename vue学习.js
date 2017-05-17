@@ -106,6 +106,10 @@ Vue 异步执行 DOM 更新。只要观察到数据变化，Vue 将开启一个�
 这样回调函数在 DOM 更新完成后就会调用。
 
 
+// React中的 setState 不会立即更新数据 
+当执行setState时，会将需要更新的state合并放入状态队列，而不会立即更新this.state
+
+
 
 // vue 组件通信
 组件之间的数据传递，vue 和 react 一样 默认是 单向的
