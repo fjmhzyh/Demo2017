@@ -31,6 +31,47 @@
 	flex:1 1 auto;
 }
 
+/* sticky footer 布局 */
+/* 当内容不够长的时候，内容被顶下去 */
+
+
+
+/* 背景图的设置 绝对定位 z-index:-1 */
+{
+  position:absolute
+  top:0
+  left:0
+  width:100%
+  height:100%
+  z-index:-1
+  filter:blur(5px)
+}
+
+
+
+/* 各种对齐 */
+
+/* icon图标 和 文字 垂直居中 */
+{
+  vertical-align:top
+}
+
+
+/* span 和 span 垂直居中 */
+{
+  margin-top :10px;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 /* css3 选择器 */
 
