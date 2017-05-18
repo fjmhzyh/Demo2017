@@ -501,6 +501,31 @@ EventEmitter.removeListener(event, listener)
 
 
 
+//  跨域资源共享  cors
+app.all('*',function (req, res, next) {
+  res.set({
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers':'Content-Type, Content-Length, Authorization, Accept, X-Requested-With',
+    'Access-Control-Allow-Methods':'PUT, POST, GET, DELETE, OPTIONS'
+  })
+  next()
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // cmd的一些命令
 

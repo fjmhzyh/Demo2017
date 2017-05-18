@@ -48,6 +48,20 @@
 }
 
 
+/* 自定义 单选 多选 按钮 使用背景图切换 */
+<div><input type="radio" name="gender" value="1"><label>男</label></div>
+/* 给外层容器添加 背景图 将input 绝对定位到 背景图上 opacity设为0 */
+
+
+
+/* opacity  visibility display:none */
+{
+  display: none; /* 不占据空间，无法点击 */
+  visibility: hidden; /* 占据空间，无法点击 */ 
+  opacity: 0;   /* 占据空间，可以点击 */ 
+}
+
+
 
 /* 各种对齐 */
 

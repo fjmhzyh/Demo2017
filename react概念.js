@@ -142,6 +142,11 @@ Perf.start()
 Perf.stop()
 
 
+// 测试工具
+Mocha   // describe it 包裹测试
+Enzyme  // React专用测试工具  模拟用户交互的自动化工具
+Expect  // 断言测试
+
 
 // setState 异步更新    setState通过一个队列机制实现state更新。
 // 当执行setState时，会将需要更新的state合并放入状态队列，而不会立即更新this.state.
@@ -236,3 +241,24 @@ readFile = thunk(file)(callback)
 
 // 复杂异步流  
 在实际场景中，我们不但有短连接，还有轮询请求，多异步串联请求，或是在异步中加入同步处理的逻辑。
+
+
+
+
+
+
+
+
+
+// 服务端渲染 
+React之所以能做到服务端渲染，主要是因为 ReactDOM。
+它有一个分之 react-dom/server。可以让 React 组件以 '字符串' 的形式渲染
+通常需要在服务端预加载数据，这样浏览器才能收到携带数据的页面。
+如果在客户端请求数据，则往往会出现 '闪屏' 等问题
+
+renderToString()   
+// 把 React元素转成 HTML字符串 并在服务端标识 reactid。
+// 所以在重新渲染时，React只是做事件绑定等操作。而不会重新渲染整个DOM树
+
+renderToStaticMarkup()
+// renderToString的 简化版。如果应用基本上是静态文本，建议使用这个方法
