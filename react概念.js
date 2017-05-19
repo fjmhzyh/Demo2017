@@ -197,7 +197,8 @@ Redux 是 Flux 架构的实现
 // Redux Api
 createStore
 combineReducers
-bindActionCreators
+bindActionCreators(actionCreators, dispatch)   //  actionCreators(Function or Object)
+// 返回值 (Function or Object):  可以直接调用，不需要dispatch
 applyMiddleware     // 加载 middleware   
 compose
 

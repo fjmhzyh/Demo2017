@@ -48,11 +48,6 @@ require("./index.js");
 
 
 
-
-
-
-
-
 前端开发中,性能消耗最大的就是DOM操作
 react最小化了重绘,避免了不必要的DOM操作
 
@@ -106,7 +101,9 @@ Data Flow   // '单向数据绑定' 是 React 推崇的一种应用架构的方�
 // 尽管JSX是第三方标准，但这套标准适用于任何一个框架
 
 
-
+// 阻止冒泡
+e.stopPropagation()
+e.nativeEvent.stopImmediatePropagation()
 
 
 
@@ -334,6 +331,16 @@ Redux
 //   const {value} = this.refs.name;  // 拿值
 //   console.log(value);
 // }
+
+
+// 不给表单value，表单也是非受控的
+
+
+
+
+
+
+
 
 
 // style
