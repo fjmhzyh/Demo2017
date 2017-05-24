@@ -290,7 +290,9 @@ xhr.send(null);
 
 
 
-
+// 事件冒泡
+// 只执行子元素事件，而不执行父元素事件
+e.stopPropagation()
 
 
 

@@ -23,7 +23,7 @@ npm install express babel-core babel-polyfill babel-loader babel-preset-es2015 b
 npm install --save-dev webpack webpack-dev-server  //安装webpack
 npm install --save react react-dom react-hot-loader@next   //安装react
 npm install react-router-dom --save    // 安装react router
-npm install --save redux   // 安装redux
+npm install --save redux react-redux redux-devtools // 安装redux
 // 安装 babel
 npm install babel-core babel-polyfill babel-loader babel-preset-es2015 babel-preset-react --save-dev
 // 安装loader
@@ -44,6 +44,10 @@ require("./index.js");
 
 
 
+// 注意事项
+一定要引用React   import React from 'react';
+事件触发action 用匿名函数   <div onClick={ () => addTodo(text) }></div>
+connect()() 返回的组件，第一个参数是所有数据的集合
 
 
 
