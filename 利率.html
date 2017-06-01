@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>利率</title>
+	<style>
+		#main{
+			width:800px;
+			height:400px;
+			margin:100px auto;
+		}
+	</style>
+</head>
+<body>
+	<div id="main"></div>
+	<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
+	<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts图表
+        var myChart = echarts.init(document.getElementById('main')); 
+        
+        var option = {
+		    title : {
+		        text: '理财收益表',
+		    },
+		    tooltip : {
+		        trigger: 'axis',
+		        textStyle : {
+		            fontSize: 14,
+		        },
+		        formatter:  function (params,ticket,callback) {
+		        	var res = '年华利率'+params[0].name+'%'
+		        	for (var i = 0, l = params.length; i < l; i++) {
+		                res += '<br/>' + params[i].seriesName + ' : ' + params[i].value;
+		            }
+		            return res
+		        }
+		    },
+		    legend: {
+		        data:['本金1W','本金5W','本金20W']
+		    },
+		    toolbox: {
+		        show : true,
+		        feature : {
+		            mark : {show: false},
+		            dataView : {show: false, readOnly: false},
+		            magicType : {show: true, type: ['line', 'bar']},
+		            restore : {show: true},
+		            saveAsImage : {show: true}
+		        }
+		    },
+		    calculable : true,
+		    xAxis : [
+		        {
+		            type : 'category',
+		            boundaryGap : false,
+		            data : ['4','10','15','20','25','30'],
+		            axisLabel : {
+		            	textStyle:{
+		            		fontSize:14
+		            	},
+		                formatter: '{value} %'
+		            }
+		        }
+		    ],
+		    yAxis : [
+		        {
+		            type : 'value',
+		            min:0,
+		            max:60000,
+		            axisLabel : {
+		            	textStyle:{
+		            		fontSize:14
+		            	},
+		                formatter: '{value} 元'
+		            }
+		        }
+		    ],
+		    series : [
+		        {
+		            name:'本金1W',
+		            type:'line',
+		            data:[400, 1000, 1500, 2000, 2500, 3000],
+		        },
+		        {
+		            name:'本金5W',
+		            type:'line',
+		            data:[2000, 5000, 7500, 10000, 12500, 15000],
+		        },
+		        {
+		            name:'本金20W',
+		            type:'line',
+		            data:[8000, 20000, 30000, 40000, 50000,60000],
+		        },
+		    ]
+		};
+
+        // 为echarts对象加载数据 
+        myChart.setOption(option); 
+    </script>
+</body>
+</html>
+
+

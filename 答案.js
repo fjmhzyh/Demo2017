@@ -12,6 +12,16 @@ PWD Print Working Directory  // 打印当前工作目录
 
 ctrl+d 选中相同的
 
+
+// 性能优化
+变量    // 在开头申明所需要的变量
+DOM     // 缓存获取的DOM元素，避免多次获取
+        // 不要在循环当中获取DOM。在外部获取并缓存
+事件    // 假如需要对100个元素进行绑定，需要绑定100个事件。效率是很低的。
+        // 可以对父元素进行绑定，通过e.target进行判断。这样只需绑定一个事件
+
+
+
 // git
 github 上有5个文件,本地有3个文件,git push后本地覆盖了github
 github 上的文件和本地冲突时, git pull 会合并到本地文件
@@ -958,7 +968,7 @@ delete o.age  // 删除getter
 var o = {
     _age:1
 }
-// 使用getter 和 setter 时,不允许使用writable和value这两个属性
+// 使用getter 和 setter 时,不允许使用writable和value这两个属性,反之亦然
 Object.defineProperty(o,"age",{
     get:function (){
         return this._age;    
@@ -971,7 +981,7 @@ Object.defineProperty(o,"age",{
 
 // Object.defineProperty(obj, prop, descriptor)
 Object.defineProperty(obj,"test",{
-    configurable:true,          // 是否可以删除或重写属性
+    configurable:true,          // 是否可以删除或重写属性,默认为false
     enumerable:true,            // 是否可以枚举
     value:任意类型的值,
     writable:true               // 是否可以修改value
@@ -982,6 +992,10 @@ a.prototype.get = function(){
     console.log('aa')
 }
 
+var a={};
+Object.defineProperty(a,'b',{})  // a.b 输出undefined
+a.b=1;  // 无效, defineProperty默认configurable为false
+Object.defineProperty(a,'b',{value:1})  // 报错,不能redefine
 
 
 
@@ -1379,10 +1393,21 @@ Array.prototype.map()      // 返回一个新数组
 
 
 
+// DOM操作
+ParentNode.append()   // 在最后插入一组 Node 对象或 DOMString 对象。没有返回值
+Node.appendChild()   // 只接受 Node 对象。只能追加一个节点。返回追加的 Node 对象。
+
+// 插入一个节点，同时插入一些文本
+var parent = document.createElement("div");
+var p = document.createElement("p");
+parent.append("Some text", p);
 
 
-
-
+// DocumentFragments  是DOM节点,存在与内存中，而不在DOM树中  IE9+
+DocumentFragments是DOM节点。它们不是主DOM树的一部分。
+通常的用例是创建文档片段，将元素附加到文档片段，然后将文档片段附加到DOM树。
+在DOM树中，文档片段被其所有的孩子所代替。
+因为文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流
 
 
 

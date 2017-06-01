@@ -105,9 +105,17 @@ Vue 异步执行 DOM 更新。只要观察到数据变化，Vue 将开启一个�
 如果你想在 DOM 状态更新后做点什么，可以在数据变化之后立即使用 Vue.nextTick(callback) 。
 这样回调函数在 DOM 更新完成后就会调用。
 
+vm.message ='new data';   // 更新数据将触发 beforeUpdate 和 updated 钩子
+在 beforeUpdate中 更新数据 将触发无限更新
+
+// 获取完数据,更新data时,会在nextTick触发DOM的更新,更新完之后再获取DOM
+
 
 // React中的 setState 不会立即更新数据 
 当执行setState时，会将需要更新的state合并放入状态队列，而不会立即更新this.state
+
+
+
 
 
 
@@ -155,6 +163,13 @@ v-on    // 绑定事件,冒号后接受一个事件参数   v-on:click="clickHan
 
 beforeCreate > created > beforeMount > mounted > beforeUpdate > updated > beforeDestroy > destroyed 
 
+// 生命周期方法
+vm.$mount('#app')  // 如果 Vue 实例在实例化时没有收到 el 选项，则它处于“未挂载”状态，
+// 没有关联的 DOM 元素。可以使用 vm.$mount() 手动地挂载一个未挂载的实例。
+
+vm.$mount('#app').$nextTick()  // 这个方法返回实例自身，因而可以链式调用其它实例方法。
+
+vm.$forceUpdate()  // 迫使Vue实例重新渲染
 
 vm.$nextTick()
 // 将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它，然后等待 DOM 更新。
@@ -163,6 +178,21 @@ vm.$nextTick()
 vm.$destroy()
 // 完全销毁一个实例。清理它与其它实例的连接，解绑它的全部指令及事件监听器。
 // 触发 beforeDestroy 和 destroyed 的钩子。
+
+
+
+
+// 实例属性
+
+vm.$el   	 // 根DOM元素
+vm.$data     // Vue 实例观察的数据对象。Vue 实例代理了对其 data 对象属性的访问。
+vm.$root     // 当前组件树的根 Vue 实例。如果没有父实例，则指向自已。
+vm.$parent   // 父实例
+vm.$children // 当前实例的直接子组件。需要注意 $children 并不保证顺序，也不是响应式的。
+vm.$slot     // 用来访问被 slot 分发的内容。每个具名 slot 有其相应的属性
+vm.$ref      // ref 被用来给元素或子组件注册引用信息。
+
+
 
 
 
@@ -201,11 +231,96 @@ this.$set(this.someObject,'b',2)   // 将响应属性添加到嵌套的对象上
 <child :my-message="['a','b','c','d']"></child>   // 传递一个数组  这里要用v-bind才能出来
 <child :my-message="{a:1}"></child>   // 传递一个对象  这里要用v-bind才能出来
 
+
 // 动态的 props
 在模板中，要动态绑定父组件的数据到子模板的props，必须用 v-bind。
 当父组件的数据变化时，该变化也会传给子组件
 <child v-bind:my-message="parentMsg"></child>   // 注意不要用 驼峰式  
 
 
-// 传过程分析
+// props中 引用类型必须通过函数返回
+props:{
+  ratings:Array,
+  default() {
+    return []
+  }
+}
+
+
+// props的双向绑定   .sync
+<comp :foo.sync="bar"></comp>  		 // 引用子组件
+this.$emit('update:foo', newValue)   // 子组件通知父组件更新
+
+// 数据传过程分析
 假设 parentMsg 是一个异步获取的对象， 那么一开始传递给子组件的 my-message 则是一个空对象
+
+
+
+
+// computed   任何复杂逻辑，你都应当使用计算属性
+计算属性是基于它们的依赖进行缓存的。计算属性只有在它的相关依赖发生改变时才会重新求值。
+// methods
+只要发生重新渲染，method 调用总会执行该函数。如果你不希望有缓存，请用 method 替代。
+// watch
+当你有一些数据需要随着其它数据变动而变动时,通常更好的想法是使用 computed 
+{
+	watch: {
+	    firstName: function (val) {
+	      this.fullName = val + ' ' + this.lastName
+	    },
+	    lastName: function (val) {
+	      this.fullName = this.firstName + ' ' + val
+	    }
+	}
+	computed: {
+		fullName: function () {
+		  return this.firstName + ' ' + this.lastName
+		}
+	}
+}
+
+
+
+// v-if   v-show   频繁切换 v-show
+v-if是惰性的：如果在初始渲染时条件为假，则什么也不做——直到条件第一次变为真时，才会开始渲染条件块。
+v-show 就简单得多——不管初始条件是什么，元素总是会被渲染，并且只是简单地基于 CSS 进行切换。
+因此，如果需要非常频繁地切换，则使用 v-show 较好；如果在运行时条件不太可能改变，则使用 v-if 较好。
+
+
+
+// 父组件调用子组件方法
+<user-profile ref="profile"></user-profile>  // 给子组件设置 ref
+parent.$refs.profile.addTodo()
+
+
+
+
+
+
+
+
+// 动画
+vue 的动画有顺序差别  把enter-active和leave放在前面。enter和leave-active放在后面
+
+
+
+
+
+
+
+// bscroll 外层元素必须有固定的高度,内层是需要滚动的内容层。必须保证外层已经渲染,再实例化
+
+
+
+
+
+
+
+
+
+
+
+// 数据流   如何传递/更新数据
+// 生命周期的体现  何时获取/更新数据。何时绑定/解除事件。何时获取DOM
+// 父子组件，兄弟组件，跨级组件的通信
+// 
