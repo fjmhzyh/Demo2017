@@ -224,6 +224,13 @@ exec('cat a.txt'|'sort'|'uniq',function(err,stdout,stderr){
 
 
 
+// 重定向  页面跳转
+response.writeHead(302, {
+  'Location': 'your/404/path.html'
+  //add other headers here...
+});
+response.end();
+
 
 
 
