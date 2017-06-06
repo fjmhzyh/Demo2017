@@ -1,4 +1,5 @@
-
+// npm
+npm config set save-exact true   // 锁定版本
 
 // 无论你在使用什么模块, 找一下emit 和 on 这两个方法
 // Express的app对象就有这些方法,并且它们非常适合在应用中发消息

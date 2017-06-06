@@ -270,6 +270,29 @@ db.num.getIndexes()
 
 
 // mysql 学习
+所有的函数以 select 开头  select now() select user()
+
+// 登录mysql
+mysql -h hostname -P port -u username -p databasename
+
+// 用户管理
+Mysql 中的 mysql 数据库存储的都是权限表。其中包括 user表，db表，host表等
+
+user表 存储了所有的用户  select user,host from user;
+db表  存储了某个用户对一个数据库的权限
+
+// 新建用户
+create user 'fjm'@'localhost' identified by '1111';
+
+// 删除用户
+drop user 'fjm'@'localhost';
+
+//修改密码
+set password = password('1212');
+
+select user()    // 当前用户
+
+
 
 //  数据库概念
 索引  // 索引是创建在表上的，是对表中的一列或多列的值进行排序的一种结构
@@ -428,7 +451,7 @@ alter table t1 drop foreign key 外键名   // 删除外键名
 alter table example modify name varchar(30);   // 可以用来修改字段的位置
 
 // 修改字段名  change
- alter table example change 旧字段名 新字段名 数据类型;
+alter table example change 旧字段名 新字段名 数据类型;
 
 // 增加字段  add 默认添加到最后  first插入到最前面
 // alter table example add 字段 数据类型 first|after 字段;  
@@ -657,3 +680,16 @@ end
 
  call del(5,@total) 
  select @total
+
+
+// mysql charset 字符集 
+// 修改数据库字符集：
+ALTER DATABASE db_name DEFAULT CHARACTER SET character_name [COLLATE ...];
+
+// 把表默认的字符集和所有字符列（CHAR,VARCHAR,TEXT）改为新的字符集：
+ALTER TABLE tbl_name CONVERT TO CHARACTER SET character_name [COLLATE ...] 
+如：ALTER TABLE logtest CONVERT TO CHARACTER SET utf8 
+
+// 只是修改表的默认字符集：
+ALTER TABLE tbl_name DEFAULT CHARACTER SET character_name [COLLATE...]; 
+如：ALTER TABLE logtest DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
