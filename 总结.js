@@ -555,3 +555,11 @@ echo port=1000     // 设置环境变量
 ping 127.0.0.7 -n 2
 
 
+
+
+
+
+// 实际开发经验
+
+body-parser 只能解析表单数据，不能处理文件上传
+可以用express-formidable比较方便

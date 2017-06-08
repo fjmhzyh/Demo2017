@@ -1411,9 +1411,13 @@ DocumentFragments是DOM节点。它们不是主DOM树的一部分。
 
 
 
+// 判断 一个值 为 空 / null / undefined
+var id ="   ";  //  id.length是3，并且不是空
 
-
-
+// 可以这样判断
+if(id&&id.trim()){
+    console.log(1)
+}
 
 
 
