@@ -248,6 +248,8 @@ readFile = thunk(file)(callback)
 
 
 
+// 路由的基本原理
+路由的基本原理是保证view 和 url 的同步
 
 
 
