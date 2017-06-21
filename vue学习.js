@@ -324,3 +324,18 @@ vue 的动画有顺序差别  把enter-active和leave放在前面。enter和leav
 // 生命周期的体现  何时获取/更新数据。何时绑定/解除事件。何时获取DOM
 // 父子组件，兄弟组件，跨级组件的通信
 // 
+
+
+
+
+
+
+
+// VUE 安全性  防止客户端篡改数据
+永远不要相信用户输入。
+
+前端：在打包的时候，记得把Vue.config.devtools设置成false，
+这样就不能被调试，也取不到this.$vm了。
+（Vue.config.devtools = process.env.NODE_ENV !== 'production'）
+
+后端：添加接口调用权限卡控，要卡控到每个用户所属的角色能够调用哪些接口才行。
