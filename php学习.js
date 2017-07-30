@@ -3,7 +3,7 @@
 安装之前一定要装 visual c 2013
 
 httpd.config		  // apache的配置文件  里面的#是注释符号
-httpd.vhosts.config   // 配置扩展文件
+httpd.vhosts.config   // 配置扩展文件  默认不加载
 
 // 配置项目根目录
 httpd.config 文件中修改 DocumentRoot 和 Directory 路径
