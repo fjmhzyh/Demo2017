@@ -563,3 +563,17 @@ ping 127.0.0.7 -n 2
 
 body-parser 只能解析表单数据，不能处理文件上传
 可以用express-formidable比较方便
+
+
+
+// express
+// 127.0.0.1:3000
+
+req.hostname      //  127.0.0.1
+req.baseUrl       //  获取到 router /后面的
+req.originalUrl   //  获取到 / 后面的
+req.headers       //  获取到请求头  原生API
+
+
+// ejs
+var baseUrl = "<%= baseUrl %>";   // 在script中获取ejs变量

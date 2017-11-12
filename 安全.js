@@ -529,7 +529,7 @@ CSRF一般会产生 写数据 操作 的url。比如 增删改 ，而读数据�
 
 
 // 验证码  CAPTCHA  Completely Automated Public Turning Test to Tell Computers and Humans Apart
-// 全自动区分计算机和人类的图灵测试
+全自动区分计算机和人类的图灵测试
 
 // 判断客户端是否是浏览器
 User-Agent	// 可以被篡改
@@ -564,3 +564,5 @@ unset()  // 默认只销毁局部变量。要销毁全局变量必须使用 unse
 apache以root或admin身份运行是一个非常糟糕的决定。它会带来两个后果
 一、黑客入侵成功时，将直接获得一个高权限的shell
 二、应用程序本身将具备高权限，当出现BUG时，可能带来较高风险，比如删除本地重要文件，杀死进程等。
+
+

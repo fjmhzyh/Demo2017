@@ -172,3 +172,13 @@ box-shadow: 0 0 10px #0CC;     /*  四周外发光 */
 
 /* background属性 */
 background ： [color] | [image] | [background-position][/background-size] | [background-repeat] | [background-attachment] | [background-clip] | [background-origin],...
+
+
+/* 图片宽高相等 */
+
+{
+	position: relative;
+	width: 100%;
+	height: 0;
+	padding-top: 100%;
+}
